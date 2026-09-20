@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -31,7 +32,16 @@ export class AppointmentsService {
     private readonly employeesService: EmployeesService,
     private readonly availabilityService: AvailabilityService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly configService: ConfigService,
   ) {}
+
+  private get bookingMarginMs(): number {
+    const hours = this.configService.get<number>(
+      'MIN_HOURS_BEFORE_BOOKING',
+      1,
+    );
+    return Math.max(hours > 0 ? hours : 1, 1) * 60 * 60 * 1000;
+  }
 
   /**
    * Crear cita dentro de una transacción.
@@ -65,6 +75,12 @@ export class AppointmentsService {
 
     if (startTime <= new Date()) {
       throw new BadRequestException('No se puede agendar una cita en el pasado');
+    }
+
+    if (startTime.getTime() < Date.now() + this.bookingMarginMs) {
+      throw new BadRequestException(
+        'Debes reservar con mayor antelación. Elige una hora más lejana.',
+      );
     }
 
     // Validación algorítmica de disponibilidad
@@ -275,6 +291,12 @@ export class AppointmentsService {
     if (newStartTime <= new Date()) {
       throw new BadRequestException(
         'La nueva fecha y hora debe ser en el futuro',
+      );
+    }
+
+    if (newStartTime.getTime() < Date.now() + this.bookingMarginMs) {
+      throw new BadRequestException(
+        'Debes reprogramar con mayor antelación. Elige una hora más lejana.',
       );
     }
 

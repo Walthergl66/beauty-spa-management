@@ -11,6 +11,7 @@ describe('AppointmentsService (Sprint 3: solapamiento y márgenes)', () => {
   let mockEmployeesService: any;
   let mockAvailabilityService: any;
   let mockEventEmitter: any;
+  let mockConfigService: any;
 
   const serviceEntity = {
     id: 'service-1',
@@ -46,6 +47,7 @@ describe('AppointmentsService (Sprint 3: solapamiento y márgenes)', () => {
     mockEmployeesService = { findById: vi.fn() };
     mockAvailabilityService = { isSlotAvailable: vi.fn() };
     mockEventEmitter = { emit: vi.fn() };
+    mockConfigService = { get: vi.fn((key: string, def?: number) => def) };
 
     service = new AppointmentsService(
       mockRepository,
@@ -54,6 +56,7 @@ describe('AppointmentsService (Sprint 3: solapamiento y márgenes)', () => {
       mockEmployeesService,
       mockAvailabilityService,
       mockEventEmitter,
+      mockConfigService,
     );
   });
 

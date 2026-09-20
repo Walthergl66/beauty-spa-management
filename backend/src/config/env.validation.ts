@@ -105,6 +105,10 @@ export class EnvironmentVariables {
   @IsString()
   @IsOptional()
   SEED_ADMIN: string = 'false';
+
+  @IsNumber()
+  @IsOptional()
+  MIN_HOURS_BEFORE_BOOKING: number = 1;
 }
 
 export function validate(config: Record<string, unknown>) {
