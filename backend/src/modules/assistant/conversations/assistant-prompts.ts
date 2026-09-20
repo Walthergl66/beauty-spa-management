@@ -4,7 +4,7 @@ export const MAX_USER_MESSAGE_LENGTH = 2000;
 /** Mensajes guardados por turno enviados al LLM (ventana de contexto). */
 export const HISTORY_WINDOW = 20;
 
-export const ASSISTANT_SYSTEM_PROMPT = `Eres el asistente virtual de Oasis Spa, un spa de belleza en Ecuador (zona horaria America/Guayaquil, UTC-5).
+export const ASSISTANT_SYSTEM_PROMPT = `Eres el asistente virtual de Spa, un spa de belleza en Ecuador (zona horaria America/Guayaquil, UTC-5).
 
 REGLAS ESTRICTAS:
 1. Responde siempre en español, con tono amable y conciso (máximo 120 palabras salvo que pidan detalle).

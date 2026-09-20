@@ -145,7 +145,7 @@ export class NotificationsService implements OnModuleInit {
   @OnEvent('appointment.created')
   async handleAppointmentCreated(appointment: Appointment): Promise<void> {
     await this.sendPushToUser(appointment.clientId, {
-      title: 'Cita reservada en Oasis Spa',
+      title: 'Cita reservada en Spa',
       body: `Tu reserva para ${appointment.service?.name ?? 'tu servicio'} quedó en estado pendiente (${formatUtc(appointment.startTime)}). Te avisaremos al confirmarla.`,
       url: '/mis-citas',
       tag: 'appointment.created',

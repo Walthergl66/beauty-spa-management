@@ -17,7 +17,7 @@ export class MockLlmProvider implements LlmProvider {
     const text = lastUser.toLowerCase();
 
     if (/(hola|buenas|buenos días|buenas tardes|hello|hi)\b/.test(text)) {
-      return '¡Hola! Soy el asistente virtual de Oasis Spa. Puedo contarte sobre nuestros servicios, horarios y ayudarte a reservar. ¿Qué te gustaría hacer hoy?';
+      return '¡Hola! Soy el asistente virtual de Spa. Puedo contarte sobre nuestros servicios, horarios y ayudarte a reservar. ¿Qué te gustaría hacer hoy?';
     }
     if (/(servicio|catálogo|catalogo|masaje|facial|precio|cuánto|cuanto)/.test(text)) {
       return 'Tenemos masajes relajantes, limpiezas faciales, tratamientos corporales y más. Puedes ver el catálogo completo en /services/active con precios y duraciones. ¿Te interesa algún tratamiento en particular?';
@@ -34,6 +34,6 @@ export class MockLlmProvider implements LlmProvider {
     if (/(gracias|thank)/.test(text)) {
       return '¡Con gusto! Quedo atento si necesitas algo más para tu bienestar.';
     }
-    return 'Entendido. Soy el asistente de Oasis Spa: puedo informar sobre servicios, consultar disponibilidad real y ayudarte a reservar, cancelar o reprogramar. ¿Me cuentas un poco más de lo que buscas?';
+    return 'Entendido. Soy el asistente de Spa: puedo informar sobre servicios, consultar disponibilidad real y ayudarte a reservar, cancelar o reprogramar. ¿Me cuentas un poco más de lo que buscas?';
   }
 }

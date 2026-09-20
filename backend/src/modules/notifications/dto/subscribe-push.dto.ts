@@ -33,7 +33,7 @@ export class SubscribePushDto {
   keys: PushKeysDto;
 
   @ApiPropertyOptional({
-    example: 'Mozilla/5.0 (Android) PWA Oasis Spa',
+    example: 'Mozilla/5.0 (Android) PWA Spa',
     description: 'User-Agent del dispositivo para identificarlo',
   })
   @IsString()

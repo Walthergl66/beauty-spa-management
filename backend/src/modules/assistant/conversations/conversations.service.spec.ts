@@ -22,7 +22,7 @@ describe('MockLlmProvider', () => {
   it('responde saludo, catálogo y reserva sin inventar horarios', async () => {
     const llm = new MockLlmProvider();
     const greeting = await llm.generateReply([{ role: 'user', content: 'Hola' }]);
-    expect(greeting).toContain('Oasis Spa');
+    expect(greeting).toContain('Spa');
     const catalog = await llm.generateReply([{ role: 'user', content: '¿Qué servicios y precios tienen?' }]);
     expect(catalog).toContain('catálogo');
     const booking = await llm.generateReply([{ role: 'user', content: 'Quiero reservar una cita mañana' }]);

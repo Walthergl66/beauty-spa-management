@@ -50,7 +50,7 @@ async function bootstrap() {
 
   // Swagger Documentation
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Oasis Spa API')
+    .setTitle('Spa API')
     .setDescription(
       'API REST modular y asistente virtual para la gestión de citas en Spas de Belleza (Titulacion)',
     )
