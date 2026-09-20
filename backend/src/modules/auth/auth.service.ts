@@ -16,6 +16,12 @@ import { AuthResponseDto, TokensDto } from './dto/auth-response.dto.js';
 import { UserResponseDto } from '../users/dto/user-response.dto.js';
 import { Role } from '../../common/enums/role.enum.js';
 
+interface RefreshTokenPayload {
+  sub: string;
+  email?: string;
+  role?: string;
+}
+
 @Injectable()
 export class AuthService implements OnApplicationBootstrap {
   private readonly logger = new Logger(AuthService.name);
@@ -90,8 +96,21 @@ export class AuthService implements OnApplicationBootstrap {
     };
   }
 
-  async refreshToken(userId: string, refreshToken: string): Promise<TokensDto> {
-    const user = await this.usersService.findById(userId);
+  async refreshToken(refreshToken: string): Promise<TokensDto> {
+    let payload: RefreshTokenPayload;
+    try {
+      const refreshSecret =
+        this.configService.get<string>('JWT_REFRESH_SECRET') ||
+        'spa_refresh_secret_key_titulacion_2026_super_secure';
+      payload = await this.jwtService.verifyAsync<RefreshTokenPayload>(
+        refreshToken,
+        { secret: refreshSecret },
+      );
+    } catch {
+      throw new ForbiddenException('Token de actualización inválido o expirado');
+    }
+
+    const user = await this.usersService.findById(payload.sub);
     if (!user || !user.isActive || !user.refreshTokenHash) {
       throw new ForbiddenException('Acceso denegado');
     }

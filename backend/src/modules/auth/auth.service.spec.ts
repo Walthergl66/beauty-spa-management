@@ -18,6 +18,11 @@ describe('AuthService', () => {
 
     mockJwtService = {
       signAsync: vi.fn().mockResolvedValue('mock_token'),
+      verifyAsync: vi.fn().mockResolvedValue({
+        sub: 'uuid-1',
+        email: 'cliente@test.com',
+        role: Role.CLIENT,
+      }),
     };
 
     mockConfigService = {
@@ -73,6 +78,38 @@ describe('AuthService', () => {
     expect(result.user.email).toBe('cliente@test.com');
     expect(result.tokens.accessToken).toBe('mock_token');
     expect(result.tokens.refreshToken).toBe('mock_token');
+  });
+
+  it('should refresh tokens with a valid refresh token', async () => {
+    const refreshToken = 'valid.refresh.token';
+    const storedHash = await authService.hashData(refreshToken);
+
+    mockUsersService.findById.mockResolvedValue({
+      id: 'uuid-1',
+      email: 'cliente@test.com',
+      role: Role.CLIENT,
+      isActive: true,
+      refreshTokenHash: storedHash,
+    });
+
+    const result = await authService.refreshToken(refreshToken);
+
+    expect(result.accessToken).toBe('mock_token');
+    expect(result.refreshToken).toBe('mock_token');
+    expect(mockUsersService.updateRefreshToken).toHaveBeenCalledWith(
+      'uuid-1',
+      expect.stringMatching(/^\$2[bby]/),
+    );
+  });
+
+  it('should reject refresh when the token is invalid or expired', async () => {
+    mockJwtService.verifyAsync = vi
+      .fn()
+      .mockRejectedValue(new Error('jwt expired'));
+
+    await expect(
+      authService.refreshToken('expired.token'),
+    ).rejects.toThrow('Token de actualización inválido o expirado');
   });
 
   it('should reject login if password is incorrect', async () => {

@@ -45,15 +45,13 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
+  @Public()
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Renovación de tokens de acceso' })
   @ApiResponse({ status: 200, type: TokensDto })
-  async refresh(
-    @CurrentUser('id') userId: string,
-    @Body() dto: RefreshTokenDto,
-  ): Promise<TokensDto> {
-    return this.authService.refreshToken(userId, dto.refreshToken);
+  async refresh(@Body() dto: RefreshTokenDto): Promise<TokensDto> {
+    return this.authService.refreshToken(dto.refreshToken);
   }
 
   @Post('logout')
