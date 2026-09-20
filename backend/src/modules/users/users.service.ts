@@ -69,10 +69,6 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async updateRefreshToken(id: string, refreshTokenHash: string | null): Promise<void> {
-    await this.userRepository.update(id, { refreshTokenHash });
-  }
-
   async incrementTokenVersion(id: string): Promise<void> {
     await this.userRepository.increment({ id }, 'tokenVersion', 1);
   }

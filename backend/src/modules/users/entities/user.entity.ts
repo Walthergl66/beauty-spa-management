@@ -39,10 +39,6 @@ export class User {
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
-  @Column({ name: 'refresh_token_hash', type: 'varchar', nullable: true, length: 255 })
-  @Exclude()
-  refreshTokenHash: string | null;
-
   @Column({ name: 'failed_login_attempts', type: 'int', default: 0 })
   failedLoginAttempts: number;
 
