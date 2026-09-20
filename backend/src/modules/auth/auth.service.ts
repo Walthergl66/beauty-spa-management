@@ -147,22 +147,50 @@ export class AuthService implements OnApplicationBootstrap {
       this.configService.get<string>('JWT_REFRESH_SECRET') ||
       'spa_refresh_secret_key_titulacion_2026_super_secure';
 
+    const accessExpiresIn = this.parseExpiresIn(
+      this.configService.get<string>('JWT_EXPIRES_IN') || '1d',
+    );
+    const refreshExpiresIn = this.parseExpiresIn(
+      this.configService.get<string>('JWT_REFRESH_EXPIRES_IN') || '7d',
+    );
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: accessSecret,
-        expiresIn: (this.configService.get<string>('JWT_EXPIRES_IN') || '1d') as any,
+        expiresIn: accessExpiresIn,
       }),
       this.jwtService.signAsync(payload, {
         secret: refreshSecret,
-        expiresIn: (this.configService.get<string>('JWT_REFRESH_EXPIRES_IN') || '7d') as any,
+        expiresIn: refreshExpiresIn,
       }),
     ]);
 
     return {
       accessToken,
       refreshToken,
-      expiresIn: 86400,
+      expiresIn: accessExpiresIn,
     };
+  }
+
+  private parseExpiresIn(value: string): number {
+    const match = /^(\d+)(s|m|h|d)?$/.exec(value.trim());
+    if (!match) {
+      return 86400;
+    }
+    const [_, raw, unit] = match;
+    const amount = Number(raw);
+    switch (unit) {
+      case 's':
+        return amount;
+      case 'm':
+        return amount * 60;
+      case 'h':
+        return amount * 3600;
+      case 'd':
+        return amount * 86400;
+      default:
+        return amount;
+    }
   }
 
   private async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {

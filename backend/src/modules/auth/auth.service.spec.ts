@@ -78,6 +78,38 @@ describe('AuthService', () => {
     expect(result.user.email).toBe('cliente@test.com');
     expect(result.tokens.accessToken).toBe('mock_token');
     expect(result.tokens.refreshToken).toBe('mock_token');
+    expect(result.tokens.expiresIn).toBe(86400);
+  });
+
+  it('should reflect a custom access token TTL configured as 2h', async () => {
+    mockUsersService.findByEmail.mockResolvedValue(null);
+    mockUsersService.create.mockResolvedValue({
+      id: 'uuid-1',
+      email: 'cliente@test.com',
+      firstName: 'Laura',
+      lastName: 'Mendoza',
+      role: Role.CLIENT,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    mockConfigService.get = vi.fn((key: string) => {
+      if (key === 'JWT_SECRET') return 'test_jwt_secret';
+      if (key === 'JWT_REFRESH_SECRET') return 'test_jwt_refresh_secret';
+      if (key === 'JWT_EXPIRES_IN') return '2h';
+      if (key === 'JWT_REFRESH_EXPIRES_IN') return '14d';
+      if (key === 'ADMIN_EMAIL') return 'admin@spa.com';
+      return undefined;
+    });
+
+    const result = await authService.register({
+      email: 'cliente@test.com',
+      password: 'Password123!',
+      firstName: 'Laura',
+      lastName: 'Mendoza',
+    });
+
+    expect(result.tokens.expiresIn).toBe(7200);
   });
 
   it('should refresh tokens with a valid refresh token', async () => {
