@@ -26,7 +26,7 @@ export class User {
   @Column({ name: 'last_name', length: 100 })
   lastName: string;
 
-  @Column({ nullable: true, length: 30 })
+  @Column({ nullable: true, length: 10 })
   phone: string;
 
   @Column({
