@@ -28,8 +28,10 @@ services:
     env_file:
       - .env
     environment:
-      # Dentro de la red de compose el host de la DB es el servicio, no localhost
+      # Dentro de la red de compose el host de la DB es el servicio, no localhost,
+      # y el puerto interno es 5432 (el 5435 del host es solo el mapeo externo)
       DB_HOST: postgres
+      DB_PORT: 5432
       NODE_ENV: production
     ports:
       - "3000:3000"
