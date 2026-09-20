@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { EmployeeProfile } from './employee.entity.js';
+import type { EmployeeProfile } from './employee.entity.js';
 
 @Entity('employee_schedules')
 export class EmployeeSchedule {
@@ -17,9 +17,13 @@ export class EmployeeSchedule {
   @Column({ name: 'employee_id' })
   employeeId: string;
 
-  @ManyToOne(() => EmployeeProfile, (emp) => emp.schedules, {
-    onDelete: 'CASCADE',
-  })
+  // Objetivo por nombre (no por clase) para romper el ciclo ESM
+  // employee.entity <-> employee-schedule.entity con emitDecoratorMetadata.
+  @ManyToOne(
+    'EmployeeProfile',
+    (emp: EmployeeProfile) => emp.schedules,
+    { onDelete: 'CASCADE' },
+  )
   @JoinColumn({ name: 'employee_id' })
   employee: EmployeeProfile;
 

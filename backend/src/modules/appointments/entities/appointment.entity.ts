@@ -67,7 +67,7 @@ export class Appointment {
   @Column({ name: 'cancelled_at', type: 'timestamptz', nullable: true })
   cancelledAt: Date | null;
 
-  @Column({ name: 'cancelled_by_id', nullable: true })
+  @Column({ name: 'cancelled_by_id', type: 'uuid', nullable: true })
   cancelledById: string | null;
 
   @ManyToOne(() => User, { nullable: true })

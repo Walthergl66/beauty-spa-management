@@ -52,7 +52,7 @@ export class Payment {
   @Column({ type: 'text', nullable: true })
   notes: string | null;
 
-  @Column({ name: 'received_by_id', nullable: true })
+  @Column({ name: 'received_by_id', type: 'uuid', nullable: true })
   receivedById: string | null;
 
   @ManyToOne(() => User, { nullable: true, eager: true })

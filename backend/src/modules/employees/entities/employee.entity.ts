@@ -26,7 +26,7 @@ export class EmployeeProfile {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ length: 150, nullable: true })
+  @Column({ type: 'varchar', length: 150, nullable: true })
   specialty: string | null;
 
   @Column({ type: 'text', nullable: true })

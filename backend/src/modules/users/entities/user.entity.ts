@@ -39,7 +39,7 @@ export class User {
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
-  @Column({ name: 'refresh_token_hash', nullable: true, length: 255 })
+  @Column({ name: 'refresh_token_hash', type: 'varchar', nullable: true, length: 255 })
   @Exclude()
   refreshTokenHash: string | null;
 

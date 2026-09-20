@@ -7,7 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Conversation } from './conversation.entity.js';
+import type { Conversation } from './conversation.entity.js';
 
 export enum ChatRole {
   USER = 'user',
@@ -24,9 +24,13 @@ export class ChatMessage {
   @Column({ name: 'conversation_id' })
   conversationId: string;
 
-  @ManyToOne(() => Conversation, (conversation) => conversation.messages, {
-    onDelete: 'CASCADE',
-  })
+  // Objetivo por nombre (no por clase) para romper el ciclo ESM
+  // conversation.entity <-> chat-message.entity con emitDecoratorMetadata.
+  @ManyToOne(
+    'Conversation',
+    (conversation: Conversation) => conversation.messages,
+    { onDelete: 'CASCADE' },
+  )
   @JoinColumn({ name: 'conversation_id' })
   conversation: Conversation;
 
