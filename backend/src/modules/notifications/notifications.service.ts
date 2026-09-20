@@ -6,7 +6,9 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { In, Repository } from 'typeorm';
 import webpush from 'web-push';
 import { PushSubscriptionEntity } from './entities/push-subscription.entity.js';
+import { NotificationPreference } from './entities/notification-preference.entity.js';
 import { SubscribePushDto } from './dto/subscribe-push.dto.js';
+import { UpdateNotificationPreferenceDto } from './dto/update-notification-preference.dto.js';
 import { Appointment } from '../appointments/entities/appointment.entity.js';
 import { AppointmentStatus } from '../appointments/enums/appointment-status.enum.js';
 
@@ -42,8 +44,61 @@ export class NotificationsService implements OnModuleInit {
     private readonly subscriptionRepository: Repository<PushSubscriptionEntity>,
     @InjectRepository(Appointment)
     private readonly appointmentRepository: Repository<Appointment>,
+    @InjectRepository(NotificationPreference)
+    private readonly preferenceRepository: Repository<NotificationPreference>,
     private readonly configService: ConfigService,
   ) {}
+
+  async getPreferences(userId: string): Promise<NotificationPreference> {
+    const existing = await this.preferenceRepository.findOne({
+      where: { userId },
+    });
+    if (existing) {
+      return existing;
+    }
+    const created = this.preferenceRepository.create({ userId });
+    return this.preferenceRepository.save(created);
+  }
+
+  async updatePreferences(
+    userId: string,
+    dto: UpdateNotificationPreferenceDto,
+  ): Promise<NotificationPreference> {
+    const preference = await this.getPreferences(userId);
+    if (dto.appointmentCreated !== undefined) {
+      preference.appointmentCreated = dto.appointmentCreated;
+    }
+    if (dto.appointmentConfirmed !== undefined) {
+      preference.appointmentConfirmed = dto.appointmentConfirmed;
+    }
+    if (dto.appointmentCancelled !== undefined) {
+      preference.appointmentCancelled = dto.appointmentCancelled;
+    }
+    if (dto.appointmentRescheduled !== undefined) {
+      preference.appointmentRescheduled = dto.appointmentRescheduled;
+    }
+    if (dto.reminders !== undefined) {
+      preference.reminders = dto.reminders;
+    }
+    return this.preferenceRepository.save(preference);
+  }
+
+  private async isEnabled(
+    userId: string,
+    key: keyof Pick<
+      NotificationPreference,
+      | 'appointmentCreated'
+      | 'appointmentConfirmed'
+      | 'appointmentCancelled'
+      | 'appointmentRescheduled'
+      | 'reminders'
+    >,
+  ): Promise<boolean> {
+    const preference = await this.preferenceRepository.findOne({
+      where: { userId },
+    });
+    return preference ? preference[key] : true;
+  }
 
   onModuleInit() {
     const publicKey = this.configService.get<string>('VAPID_PUBLIC_KEY', '');
@@ -144,6 +199,9 @@ export class NotificationsService implements OnModuleInit {
 
   @OnEvent('appointment.created')
   async handleAppointmentCreated(appointment: Appointment): Promise<void> {
+    if (!(await this.isEnabled(appointment.clientId, 'appointmentCreated'))) {
+      return;
+    }
     await this.sendPushToUser(appointment.clientId, {
       title: 'Cita reservada en Spa',
       body: `Tu reserva para ${appointment.service?.name ?? 'tu servicio'} quedó en estado pendiente (${formatUtc(appointment.startTime)}). Te avisaremos al confirmarla.`,
@@ -155,6 +213,9 @@ export class NotificationsService implements OnModuleInit {
 
   @OnEvent('appointment.confirmed')
   async handleAppointmentConfirmed(appointment: Appointment): Promise<void> {
+    if (!(await this.isEnabled(appointment.clientId, 'appointmentConfirmed'))) {
+      return;
+    }
     await this.sendPushToUser(appointment.clientId, {
       title: 'Cita confirmada',
       body: `Tu cita de ${appointment.service?.name ?? 'spa'} fue confirmada para el ${formatUtc(appointment.startTime)}. ¡Te esperamos!`,
@@ -165,6 +226,9 @@ export class NotificationsService implements OnModuleInit {
 
   @OnEvent('appointment.cancelled')
   async handleAppointmentCancelled(appointment: Appointment): Promise<void> {
+    if (!(await this.isEnabled(appointment.clientId, 'appointmentCancelled'))) {
+      return;
+    }
     const reason = appointment.cancellationReason
       ? ` Motivo: ${appointment.cancellationReason}`
       : '';
@@ -178,6 +242,9 @@ export class NotificationsService implements OnModuleInit {
 
   @OnEvent('appointment.rescheduled')
   async handleAppointmentRescheduled(appointment: Appointment): Promise<void> {
+    if (!(await this.isEnabled(appointment.clientId, 'appointmentRescheduled'))) {
+      return;
+    }
     await this.sendPushToUser(appointment.clientId, {
       title: 'Cita reprogramada',
       body: `Tu cita se movió al ${formatUtc(appointment.startTime)}. Revisa tu agenda en Mis citas.`,
@@ -206,6 +273,9 @@ export class NotificationsService implements OnModuleInit {
       return start > now.getTime() && start <= limit.getTime();
     });
     for (const appointment of due) {
+      if (!(await this.isEnabled(appointment.clientId, 'reminders'))) {
+        continue;
+      }
       await this.sendPushToUser(appointment.clientId, {
         title: 'Recordatorio: tu cita es mañana',
         body: `Recuerda tu cita de ${appointment.service?.name ?? 'spa'} el ${formatUtc(appointment.startTime)}.`,

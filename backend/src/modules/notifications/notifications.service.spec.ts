@@ -6,14 +6,36 @@ describe('NotificationsService (Sprint 4: eventos y recordatorios)', () => {
   let service: NotificationsService;
   let mockSubRepo: any;
   let mockApptRepo: any;
+  let mockPrefRepo: any;
   let mockConfig: any;
 
   beforeEach(() => {
     mockSubRepo = { find: vi.fn(), findOne: vi.fn(), create: vi.fn(), save: vi.fn(), delete: vi.fn() };
     mockApptRepo = { find: vi.fn() };
+    mockPrefRepo = {
+      findOne: vi.fn().mockResolvedValue(null),
+      create: vi.fn((dto: any) => ({ id: 'pref-1', ...dto })),
+      save: vi.fn(async (e: any) => e),
+    };
     mockConfig = { get: vi.fn((key: string, def?: string) => def ?? '') };
-    service = new NotificationsService(mockSubRepo, mockApptRepo, mockConfig);
+    service = new NotificationsService(mockSubRepo, mockApptRepo, mockPrefRepo, mockConfig);
     service.onModuleInit();
+  });
+
+  it('respeta preferencias desactivadas al crear cita', async () => {
+    mockPrefRepo.findOne.mockResolvedValue({
+      id: 'pref-1',
+      appointmentCreated: false,
+    });
+    mockSubRepo.find.mockResolvedValue([]);
+    await service.handleAppointmentCreated({
+      id: 'appt-1',
+      clientId: 'client-1',
+      startTime: new Date(Date.now() + 86400000),
+      service: { name: 'Facial' },
+    } as any);
+    expect(service.getOutbox()).toHaveLength(0);
+    expect(mockSubRepo.find).not.toHaveBeenCalled();
   });
 
   it('opera en modo log con claves mock y registra outbox sin suscripciones', async () => {

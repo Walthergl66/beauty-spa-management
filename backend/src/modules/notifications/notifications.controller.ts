@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -16,6 +17,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { NotificationsService } from './notifications.service.js';
 import { SubscribePushDto } from './dto/subscribe-push.dto.js';
+import { UpdateNotificationPreferenceDto } from './dto/update-notification-preference.dto.js';
 import { PushSubscriptionEntity } from './entities/push-subscription.entity.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
@@ -75,6 +77,23 @@ export class NotificationsController {
   ): Promise<{ message: string }> {
     await this.notificationsService.unsubscribe(user.id, endpoint);
     return { message: 'Suscripción eliminada correctamente' };
+  }
+
+  @Get('preferences/my')
+  @Roles(Role.CLIENT, Role.EMPLOYEE, Role.ADMIN)
+  @ApiOperation({ summary: 'Obtener mis preferencias de notificación' })
+  async preferences(@CurrentUser('id') userId: string) {
+    return this.notificationsService.getPreferences(userId);
+  }
+
+  @Patch('preferences/my')
+  @Roles(Role.CLIENT, Role.EMPLOYEE, Role.ADMIN)
+  @ApiOperation({ summary: 'Actualizar mis preferencias de notificación' })
+  async updatePreferences(
+    @CurrentUser('id') userId: string,
+    @Body() dto: UpdateNotificationPreferenceDto,
+  ) {
+    return this.notificationsService.updatePreferences(userId, dto);
   }
 
   @Get('outbox')
