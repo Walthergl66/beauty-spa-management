@@ -8,6 +8,7 @@ export interface JwtPayload {
   sub: string;
   email: string;
   role: string;
+  ver?: number;
 }
 
 @Injectable()
@@ -27,6 +28,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const user = await this.usersService.findById(payload.sub);
     if (!user || !user.isActive) {
       throw new UnauthorizedException('Usuario inactivo o no autorizado');
+    }
+    if (payload.ver !== (user.tokenVersion ?? 0)) {
+      throw new UnauthorizedException('Sesión inválida, vuelve a iniciar sesión');
     }
     return {
       id: user.id,

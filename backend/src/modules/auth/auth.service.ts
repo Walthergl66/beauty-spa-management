@@ -23,6 +23,7 @@ interface RefreshTokenPayload {
   sub: string;
   email?: string;
   role?: string;
+  ver?: number;
 }
 
 const MAX_LOGIN_ATTEMPTS = 5;
@@ -67,7 +68,12 @@ export class AuthService implements OnApplicationBootstrap {
       passwordHash,
     );
 
-    const tokens = await this.generateTokens(user.id, user.email, user.role);
+    const tokens = await this.generateTokens(
+      user.id,
+      user.email,
+      user.role,
+      user.tokenVersion ?? 0,
+    );
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
     return {
@@ -122,7 +128,12 @@ export class AuthService implements OnApplicationBootstrap {
       await this.usersService.updateLoginSecurity(user.id, 0, null);
     }
 
-    const tokens = await this.generateTokens(user.id, user.email, user.role);
+    const tokens = await this.generateTokens(
+      user.id,
+      user.email,
+      user.role,
+      user.tokenVersion ?? 0,
+    );
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
     return {
@@ -157,12 +168,18 @@ export class AuthService implements OnApplicationBootstrap {
       throw new ForbiddenException('Token de actualización inválido o expirado');
     }
 
-    const tokens = await this.generateTokens(user.id, user.email, user.role);
+    const tokens = await this.generateTokens(
+      user.id,
+      user.email,
+      user.role,
+      user.tokenVersion ?? 0,
+    );
     await this.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
 
   async logout(userId: string): Promise<{ message: string }> {
+    await this.usersService.incrementTokenVersion(userId);
     await this.usersService.updateRefreshToken(userId, null);
     return { message: 'Sesión cerrada exitosamente' };
   }
@@ -171,8 +188,9 @@ export class AuthService implements OnApplicationBootstrap {
     userId: string,
     email: string,
     role: string,
+    tokenVersion: number,
   ): Promise<TokensDto> {
-    const payload = { sub: userId, email, role, jti: randomUUID() };
+    const payload = { sub: userId, email, role, jti: randomUUID(), ver: tokenVersion };
 
     const accessSecret = this.configService.getOrThrow<string>('JWT_SECRET');
     const refreshSecret =

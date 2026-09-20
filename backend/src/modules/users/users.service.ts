@@ -73,6 +73,10 @@ export class UsersService {
     await this.userRepository.update(id, { refreshTokenHash });
   }
 
+  async incrementTokenVersion(id: string): Promise<void> {
+    await this.userRepository.increment({ id }, 'tokenVersion', 1);
+  }
+
   async updateLoginSecurity(
     id: string,
     failedLoginAttempts: number,

@@ -16,6 +16,7 @@ describe('AuthService', () => {
       create: vi.fn(),
       updateRefreshToken: vi.fn(),
       updateLoginSecurity: vi.fn(),
+      incrementTokenVersion: vi.fn(),
     };
 
     mockJwtService = {
@@ -29,6 +30,12 @@ describe('AuthService', () => {
 
     mockConfigService = {
       get: vi.fn((key: string) => {
+        if (key === 'JWT_SECRET') return 'test_jwt_secret';
+        if (key === 'JWT_REFRESH_SECRET') return 'test_jwt_refresh_secret';
+        if (key === 'ADMIN_EMAIL') return 'admin@spa.com';
+        return undefined;
+      }),
+      getOrThrow: vi.fn((key: string) => {
         if (key === 'JWT_SECRET') return 'test_jwt_secret';
         if (key === 'JWT_REFRESH_SECRET') return 'test_jwt_refresh_secret';
         if (key === 'ADMIN_EMAIL') return 'admin@spa.com';
@@ -103,6 +110,7 @@ describe('AuthService', () => {
       if (key === 'ADMIN_EMAIL') return 'admin@spa.com';
       return undefined;
     });
+    mockConfigService.getOrThrow = mockConfigService.get;
 
     const result = await authService.register({
       email: 'cliente@test.com',
@@ -262,6 +270,17 @@ describe('AuthService', () => {
     expect(mockUsersService.updateLoginSecurity).toHaveBeenCalledWith(
       'uuid-1',
       0,
+      null,
+    );
+  });
+
+  it('should increment token version on logout to invalidate access tokens', async () => {
+    const result = await authService.logout('uuid-1');
+
+    expect(result.message).toBe('Sesión cerrada exitosamente');
+    expect(mockUsersService.incrementTokenVersion).toHaveBeenCalledWith('uuid-1');
+    expect(mockUsersService.updateRefreshToken).toHaveBeenCalledWith(
+      'uuid-1',
       null,
     );
   });
