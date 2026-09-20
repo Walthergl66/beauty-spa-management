@@ -50,7 +50,8 @@ async function bootstrap() {
   );
 
   // Global Filters & Interceptors
-  app.useGlobalFilters(new AllExceptionsFilter());
+  const isProduction = configService.get<string>('NODE_ENV') === 'production';
+  app.useGlobalFilters(new AllExceptionsFilter(isProduction));
   app.useGlobalInterceptors(new TransformInterceptor());
 
   // Swagger Documentation

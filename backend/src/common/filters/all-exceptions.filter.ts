@@ -12,6 +12,8 @@ import type { Request, Response } from 'express';
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
 
+  constructor(private readonly hideInternalDetails = false) {}
+
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -36,11 +38,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
         error = resObj.error || exception.name;
       }
     } else if (exception instanceof Error) {
-      message = exception.message;
       this.logger.error(
         `Unhandled exception at ${request.method} ${request.url}: ${exception.message}`,
         exception.stack,
       );
+      if (this.hideInternalDetails) {
+        message = 'Internal server error';
+      } else {
+        message = exception.message;
+      }
     }
 
     response.status(status).json({
