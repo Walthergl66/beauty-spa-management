@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
   MinLength,
+  Length,
 } from 'class-validator';
 import { Role } from '../../../common/enums/role.enum.js';
 
@@ -30,9 +31,10 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'El apellido es requerido' })
   lastName: string;
 
-  @ApiPropertyOptional({ example: '+593987654321', description: 'Número telefónico de contacto' })
+  @ApiPropertyOptional({ example: '0987654321', description: 'Número telefónico de contacto' })
   @IsString()
   @IsOptional()
+  @Length(10, 10, { message: 'El número de teléfono debe tener 10 dígitos' })
   phone?: string;
 
   @ApiPropertyOptional({ enum: Role, default: Role.CLIENT, description: 'Rol asignado al usuario' })
