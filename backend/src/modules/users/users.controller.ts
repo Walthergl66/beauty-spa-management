@@ -10,6 +10,8 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service.js';
 import { UpdateProfileDto } from './dto/update-profile.dto.js';
+import { UpdateRoleDto } from './dto/update-role.dto.js';
+import { UpdateStatusDto } from './dto/update-status.dto.js';
 import { UserResponseDto } from './dto/user-response.dto.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
@@ -59,9 +61,9 @@ export class UsersController {
   @ApiResponse({ status: 200, type: UserResponseDto })
   async updateRole(
     @Param('id') id: string,
-    @Body('role') role: Role,
+    @Body() dto: UpdateRoleDto,
   ): Promise<UserResponseDto> {
-    const updated = await this.usersService.updateRole(id, role);
+    const updated = await this.usersService.updateRole(id, dto.role);
     return UserResponseDto.fromEntity(updated);
   }
 
@@ -71,9 +73,9 @@ export class UsersController {
   @ApiResponse({ status: 200, type: UserResponseDto })
   async toggleStatus(
     @Param('id') id: string,
-    @Body('isActive') isActive: boolean,
+    @Body() dto: UpdateStatusDto,
   ): Promise<UserResponseDto> {
-    const updated = await this.usersService.toggleActive(id, isActive);
+    const updated = await this.usersService.toggleActive(id, dto.isActive);
     return UserResponseDto.fromEntity(updated);
   }
 }
