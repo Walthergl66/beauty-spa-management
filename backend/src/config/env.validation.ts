@@ -36,19 +36,19 @@ export class EnvironmentVariables {
 
   @IsString()
   @IsOptional()
-  DB_USERNAME: string = 'oasis_admin';
+  DB_USERNAME: string = 'spa_admin';
 
   @IsString()
   @IsOptional()
-  DB_PASSWORD: string = 'oasis_secret';
+  DB_PASSWORD: string = 'spa_secret';
 
   @IsString()
   @IsOptional()
-  DB_DATABASE: string = 'oasis_spa_db';
+  DB_DATABASE: string = 'spa_db';
 
   @IsString()
   @IsOptional()
-  JWT_SECRET: string = 'oasis_spa_jwt_secret_key_titulacion_2026_super_secure';
+  JWT_SECRET: string = 'spa_jwt_secret_key_titulacion_2026_super_secure';
 
   @IsString()
   @IsOptional()
@@ -56,7 +56,7 @@ export class EnvironmentVariables {
 
   @IsString()
   @IsOptional()
-  JWT_REFRESH_SECRET: string = 'oasis_spa_refresh_secret_key_titulacion_2026_super_secure';
+  JWT_REFRESH_SECRET: string = 'spa_refresh_secret_key_titulacion_2026_super_secure';
 
   @IsString()
   @IsOptional()

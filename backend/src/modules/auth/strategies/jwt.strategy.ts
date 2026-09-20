@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
       secretOrKey:
         configService.get<string>('JWT_SECRET') ||
-        'oasis_spa_jwt_secret_key_titulacion_2026_super_secure',
+        'spa_jwt_secret_key_titulacion_2026_super_secure',
     });
   }
 

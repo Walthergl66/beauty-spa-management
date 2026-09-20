@@ -123,10 +123,10 @@ export class AuthService implements OnApplicationBootstrap {
 
     const accessSecret =
       this.configService.get<string>('JWT_SECRET') ||
-      'oasis_spa_jwt_secret_key_titulacion_2026_super_secure';
+      'spa_jwt_secret_key_titulacion_2026_super_secure';
     const refreshSecret =
       this.configService.get<string>('JWT_REFRESH_SECRET') ||
-      'oasis_spa_refresh_secret_key_titulacion_2026_super_secure';
+      'spa_refresh_secret_key_titulacion_2026_super_secure';
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
