@@ -7,6 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { createHash, timingSafeEqual } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service.js';
@@ -115,7 +116,7 @@ export class AuthService implements OnApplicationBootstrap {
       throw new ForbiddenException('Acceso denegado');
     }
 
-    const refreshTokenMatches = await this.compareData(
+    const refreshTokenMatches = this.compareRefreshTokens(
       refreshToken,
       user.refreshTokenHash,
     );
@@ -194,8 +195,21 @@ export class AuthService implements OnApplicationBootstrap {
   }
 
   private async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {
-    const hash = await this.hashData(refreshToken);
+    const hash = this.hashRefreshToken(refreshToken);
     await this.usersService.updateRefreshToken(userId, hash);
+  }
+
+  private hashRefreshToken(token: string): string {
+    return createHash('sha256').update(token).digest('hex');
+  }
+
+  private compareRefreshTokens(token: string, storedHash: string): boolean {
+    const tokenHash = createHash('sha256').update(token).digest();
+    const stored = Buffer.from(storedHash, 'hex');
+    if (tokenHash.length !== stored.length) {
+      return false;
+    }
+    return timingSafeEqual(tokenHash, stored);
   }
 
   async seedAdmin(): Promise<void> {

@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { AuthService } from './auth.service.js';
 import { Role } from '../../common/enums/role.enum.js';
@@ -114,7 +115,9 @@ describe('AuthService', () => {
 
   it('should refresh tokens with a valid refresh token', async () => {
     const refreshToken = 'valid.refresh.token';
-    const storedHash = await authService.hashData(refreshToken);
+    const storedHash = createHash('sha256')
+      .update(refreshToken)
+      .digest('hex');
 
     mockUsersService.findById.mockResolvedValue({
       id: 'uuid-1',
@@ -128,10 +131,29 @@ describe('AuthService', () => {
 
     expect(result.accessToken).toBe('mock_token');
     expect(result.refreshToken).toBe('mock_token');
+    const expectedStored = createHash('sha256')
+      .update('mock_token')
+      .digest('hex');
     expect(mockUsersService.updateRefreshToken).toHaveBeenCalledWith(
       'uuid-1',
-      expect.stringMatching(/^\$2[bby]/),
+      expectedStored,
     );
+  });
+
+  it('should reject refresh when the stored token hash does not match', async () => {
+    mockUsersService.findById.mockResolvedValue({
+      id: 'uuid-1',
+      email: 'cliente@test.com',
+      role: Role.CLIENT,
+      isActive: true,
+      refreshTokenHash: createHash('sha256')
+        .update('otro.token.rotado')
+        .digest('hex'),
+    });
+
+    await expect(
+      authService.refreshToken('token.viejo'),
+    ).rejects.toThrow('Token de actualización inválido o expirado');
   });
 
   it('should reject refresh when the token is invalid or expired', async () => {
