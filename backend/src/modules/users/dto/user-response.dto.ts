@@ -15,7 +15,7 @@ export class UserResponseDto {
   @ApiProperty({ example: 'Gómez' })
   lastName: string;
 
-  @ApiPropertyOptional({ example: '+593987654321' })
+  @ApiPropertyOptional({ example: '0987654321' })
   phone?: string | null;
 
   @ApiProperty({ enum: Role, example: Role.CLIENT })
