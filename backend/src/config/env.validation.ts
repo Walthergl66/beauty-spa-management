@@ -51,16 +51,14 @@ export class EnvironmentVariables {
   DB_DATABASE: string = 'spa_db';
 
   @IsString()
-  @IsOptional()
-  JWT_SECRET: string = 'spa_jwt_secret_key_titulacion_2026_super_secure';
+  JWT_SECRET: string;
 
   @IsString()
   @IsOptional()
   JWT_EXPIRES_IN: string = '1d';
 
   @IsString()
-  @IsOptional()
-  JWT_REFRESH_SECRET: string = 'spa_refresh_secret_key_titulacion_2026_super_secure';
+  JWT_REFRESH_SECRET: string;
 
   @IsString()
   @IsOptional()
@@ -97,6 +95,12 @@ export class EnvironmentVariables {
   @IsString()
   @IsOptional()
   LLM_MODEL?: string;
+
+  @IsString()
+  ADMIN_EMAIL: string;
+
+  @IsString()
+  ADMIN_PASSWORD: string;
 }
 
 export function validate(config: Record<string, unknown>) {

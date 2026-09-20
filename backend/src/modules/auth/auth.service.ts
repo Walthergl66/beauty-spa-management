@@ -135,8 +135,7 @@ export class AuthService implements OnApplicationBootstrap {
     let payload: RefreshTokenPayload;
     try {
       const refreshSecret =
-        this.configService.get<string>('JWT_REFRESH_SECRET') ||
-        'spa_refresh_secret_key_titulacion_2026_super_secure';
+        this.configService.getOrThrow<string>('JWT_REFRESH_SECRET');
       payload = await this.jwtService.verifyAsync<RefreshTokenPayload>(
         refreshToken,
         { secret: refreshSecret },
@@ -175,12 +174,9 @@ export class AuthService implements OnApplicationBootstrap {
   ): Promise<TokensDto> {
     const payload = { sub: userId, email, role, jti: randomUUID() };
 
-    const accessSecret =
-      this.configService.get<string>('JWT_SECRET') ||
-      'spa_jwt_secret_key_titulacion_2026_super_secure';
+    const accessSecret = this.configService.getOrThrow<string>('JWT_SECRET');
     const refreshSecret =
-      this.configService.get<string>('JWT_REFRESH_SECRET') ||
-      'spa_refresh_secret_key_titulacion_2026_super_secure';
+      this.configService.getOrThrow<string>('JWT_REFRESH_SECRET');
 
     const accessExpiresIn = this.parseExpiresIn(
       this.configService.get<string>('JWT_EXPIRES_IN') || '1d',
@@ -247,14 +243,13 @@ export class AuthService implements OnApplicationBootstrap {
   }
 
   async seedAdmin(): Promise<void> {
-    const adminEmail =
-      this.configService.get<string>('ADMIN_EMAIL') || 'admin@spa.com';
+    const adminEmail = this.configService.getOrThrow<string>('ADMIN_EMAIL');
     const existingAdmin = await this.usersService.findByEmail(adminEmail);
 
     if (!existingAdmin) {
       this.logger.log(`Creando usuario administrador inicial: ${adminEmail}`);
       const adminPassword =
-        this.configService.get<string>('ADMIN_PASSWORD') || 'Admin1234*';
+        this.configService.getOrThrow<string>('ADMIN_PASSWORD');
       const passwordHash = await this.hashData(adminPassword);
 
       await this.usersService.create(
