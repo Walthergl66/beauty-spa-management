@@ -1,4 +1,4 @@
-# Oasis Spa API — Backend NestJS
+# Spa API — Backend NestJS
 
 API REST modular + asistente virtual para la gestión de citas de un spa de belleza.
 Documento rector: `../doc/plan-backend-nestjs.md`. Estado por sprint: `../agent.md`.
@@ -30,9 +30,9 @@ docker compose up -d --build api           # solo backend (espera a postgres hea
 docker compose up -d                       # ambos
 ```
 
-- `oasis_spa_db`: Postgres con volumen propio `oasis_postgres_data` (los datos
+- `spa_db`: Postgres con volumen propio `spa_postgres_data` (los datos
   sobreviven a reconstruir el api).
-- `oasis_spa_api`: imagen multi-stage sin secretos horneados (lee `.env` por
+- `spa_api`: imagen multi-stage sin secretos horneados (lee `.env` por
   `env_file`); dentro de la red usa `DB_HOST=postgres`, fuera sigue `localhost`.
 - Ciclos de vida separados: se reinicia, detiene o reconstruye uno sin tocar el otro.
 
