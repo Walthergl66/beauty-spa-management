@@ -122,8 +122,12 @@ export class AvailabilityService {
             currentSlotEnd > new Date(appt.startTime),
         );
 
-        // Validar que no sea en el pasado si es hoy (margen de 15 min)
-        const isPast = currentSlotStart.getTime() <= now.getTime() + 15 * 60 * 1000;
+        // Validar que no sea en el pasado (margen configurable por MIN_HOURS_BEFORE_BOOKING)
+        const marginMs = Math.max(
+          this.configService.get<number>('MIN_HOURS_BEFORE_BOOKING', 1) * 60 * 60 * 1000,
+          15 * 60 * 1000,
+        );
+        const isPast = currentSlotStart.getTime() <= now.getTime() + marginMs;
 
         if (!overlapsBreak && !overlapsAppointment && !isPast) {
           const employeeName = employee.user
