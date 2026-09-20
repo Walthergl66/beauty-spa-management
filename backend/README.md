@@ -22,6 +22,20 @@ npm run start:dev           # http://localhost:3000/api/v1
 Swagger: `http://localhost:3000/api/docs`. El primer arranque crea el admin
 (`ADMIN_EMAIL` / `ADMIN_PASSWORD`) y la restricción GiST anti doble reserva.
 
+## Docker (2 contenedores independientes)
+
+```bash
+docker compose up -d postgres              # solo Postgres 16 + btree_gist
+docker compose up -d --build api           # solo backend (espera a postgres healthy)
+docker compose up -d                       # ambos
+```
+
+- `oasis_spa_db`: Postgres con volumen propio `oasis_postgres_data` (los datos
+  sobreviven a reconstruir el api).
+- `oasis_spa_api`: imagen multi-stage sin secretos horneados (lee `.env` por
+  `env_file`); dentro de la red usa `DB_HOST=postgres`, fuera sigue `localhost`.
+- Ciclos de vida separados: se reinicia, detiene o reconstruye uno sin tocar el otro.
+
 ## Scripts
 
 | Comando | Uso |
