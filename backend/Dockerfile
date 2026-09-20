@@ -1,4 +1,4 @@
-# Oasis Spa API — imagen del backend (el Postgres vive en SU PROPIO
+# Spa API — imagen del backend (el Postgres vive en SU PROPIO
 # contenedor/servicio `postgres`: ciclos de vida y volúmenes independientes).
 FROM node:24-alpine AS builder
 

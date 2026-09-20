@@ -1,19 +1,19 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: oasis_spa_db
+    container_name: spa_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${DB_USERNAME:-oasis_admin}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-oasis_secret}
-      POSTGRES_DB: ${DB_DATABASE:-oasis_spa_db}
+      POSTGRES_USER: ${DB_USERNAME:-spa_admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-spa_secret}
+      POSTGRES_DB: ${DB_DATABASE:-spa_db}
     ports:
       - "${DB_PORT:-5432}:5432"
     volumes:
-      - oasis_postgres_data:/var/lib/postgresql/data
+      - spa_postgres_data:/var/lib/postgresql/data
       - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-oasis_admin} -d ${DB_DATABASE:-oasis_spa_db}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-spa_admin} -d ${DB_DATABASE:-spa_db}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -23,7 +23,7 @@ services:
   # (docker compose up -d postgres | docker compose up -d --build api).
   api:
     build: .
-    container_name: oasis_spa_api
+    container_name: spa_api
     restart: unless-stopped
     env_file:
       - .env
@@ -40,5 +40,5 @@ services:
         condition: service_healthy
 
 volumes:
-  oasis_postgres_data:
-    name: oasis_postgres_data
+  spa_postgres_data:
+    name: spa_postgres_data
