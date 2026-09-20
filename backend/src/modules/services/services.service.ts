@@ -28,8 +28,13 @@ export class ServicesService {
     }
 
     const service = this.serviceRepository.create({
-      ...createServiceDto,
       name: createServiceDto.name.trim(),
+      description: createServiceDto.description ?? null,
+      durationMinutes: createServiceDto.durationMinutes,
+      price: createServiceDto.price,
+      category: createServiceDto.category ?? null,
+      imageUrl: createServiceDto.imageUrl ?? null,
+      isActive: createServiceDto.isActive ?? true,
     });
 
     return this.serviceRepository.save(service);
