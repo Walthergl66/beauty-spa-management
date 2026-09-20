@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createHash, timingSafeEqual } from 'crypto';
+import { createHash, randomUUID, timingSafeEqual } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service.js';
@@ -139,7 +139,7 @@ export class AuthService implements OnApplicationBootstrap {
     email: string,
     role: string,
   ): Promise<TokensDto> {
-    const payload = { sub: userId, email, role };
+    const payload = { sub: userId, email, role, jti: randomUUID() };
 
     const accessSecret =
       this.configService.get<string>('JWT_SECRET') ||
