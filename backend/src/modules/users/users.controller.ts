@@ -39,10 +39,17 @@ export class UsersController {
 
   @Get()
   @Roles(Role.ADMIN)
-  @ApiOperation({ summary: 'Listar todos los usuarios (solo Admin)' })
+  @ApiOperation({ summary: 'Listar usuarios con paginación y filtro por rol (solo Admin)' })
   @ApiResponse({ status: 200, type: [UserResponseDto] })
-  async findAll(@Query('role') role?: Role): Promise<UserResponseDto[]> {
-    const users = await this.usersService.findAll(role);
+  async findAll(
+    @Query('role') role?: Role,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ): Promise<UserResponseDto[]> {
+    const users = await this.usersService.findAll(role, {
+      page: page ? Number(page) : undefined,
+      limit: limit ? Number(limit) : undefined,
+    });
     return users.map((u) => UserResponseDto.fromEntity(u));
   }
 

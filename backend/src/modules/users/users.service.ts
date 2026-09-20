@@ -27,21 +27,32 @@ export class UsersService {
     }
 
     const user = this.userRepository.create({
-      ...createUserDto,
       email: createUserDto.email.toLowerCase().trim(),
       passwordHash,
+      firstName: createUserDto.firstName,
+      lastName: createUserDto.lastName,
+      phone: createUserDto.phone ?? null,
       role: createUserDto.role || Role.CLIENT,
     });
 
     return this.userRepository.save(user);
   }
 
-  async findAll(role?: Role): Promise<User[]> {
+  async findAll(
+    role?: Role,
+    options: { page?: number; limit?: number } = {},
+  ): Promise<User[]> {
+    const limit = Math.min(Math.max(options.limit ?? 20, 1), 50);
+    const page = Math.max(options.page ?? 1, 1);
+
     const query = this.userRepository.createQueryBuilder('user');
     if (role) {
       query.where('user.role = :role', { role });
     }
-    query.orderBy('user.createdAt', 'DESC');
+    query
+      .orderBy('user.createdAt', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit);
     return query.getMany();
   }
 
@@ -71,6 +82,10 @@ export class UsersService {
 
   async incrementTokenVersion(id: string): Promise<void> {
     await this.userRepository.increment({ id }, 'tokenVersion', 1);
+  }
+
+  async updatePassword(id: string, passwordHash: string): Promise<void> {
+    await this.userRepository.update(id, { passwordHash });
   }
 
   async updateLoginSecurity(
