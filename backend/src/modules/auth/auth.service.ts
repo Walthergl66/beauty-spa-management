@@ -18,12 +18,15 @@ import { LoginDto } from './dto/login.dto.js';
 import { AuthResponseDto, TokensDto } from './dto/auth-response.dto.js';
 import { UserResponseDto } from '../users/dto/user-response.dto.js';
 import { Role } from '../../common/enums/role.enum.js';
+import { SessionService } from './sessions/session.service.js';
+import { SessionDto } from './dto/session.dto.js';
 
-interface RefreshTokenPayload {
+interface TokenPayload {
   sub: string;
   email?: string;
   role?: string;
   ver?: number;
+  sid?: string;
 }
 
 const MAX_LOGIN_ATTEMPTS = 5;
@@ -38,6 +41,7 @@ export class AuthService implements OnApplicationBootstrap {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly sessionService: SessionService,
   ) {}
 
   async onApplicationBootstrap() {

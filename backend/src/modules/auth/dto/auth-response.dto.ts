@@ -10,6 +10,9 @@ export class TokensDto {
 
   @ApiProperty({ example: 86400, description: 'Segundos de validez del access token' })
   expiresIn: number;
+
+  @ApiProperty({ description: 'ID de la sesión creada (para logout selectivo)' })
+  sessionId: string;
 }
 
 export class AuthResponseDto {
