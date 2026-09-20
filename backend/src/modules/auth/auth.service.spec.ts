@@ -167,6 +167,17 @@ describe('AuthService', () => {
     ).rejects.toThrow('Token de actualización inválido o expirado');
   });
 
+  it('should reject login for a non-existent email with the same response', async () => {
+    mockUsersService.findByEmail.mockResolvedValue(null);
+
+    await expect(
+      authService.login({
+        email: 'no-existe@test.com',
+        password: 'CualquierPassword',
+      }),
+    ).rejects.toThrow('Credenciales incorrectas');
+  });
+
   it('should reject login if password is incorrect', async () => {
     const passwordHash = await authService.hashData('CorrectPassword');
     mockUsersService.findByEmail.mockResolvedValue({

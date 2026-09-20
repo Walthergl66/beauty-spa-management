@@ -27,6 +27,7 @@ interface RefreshTokenPayload {
 
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_MINUTES = 15;
+const DUMMY_PASSWORD_HASH = bcrypt.hashSync('dummy-timing-equalizer', 10);
 
 @Injectable()
 export class AuthService implements OnApplicationBootstrap {
@@ -78,6 +79,7 @@ export class AuthService implements OnApplicationBootstrap {
   async login(loginDto: LoginDto): Promise<AuthResponseDto> {
     const user = await this.usersService.findByEmail(loginDto.email);
     if (!user) {
+      await this.compareData(loginDto.password, DUMMY_PASSWORD_HASH);
       throw new UnauthorizedException('Credenciales incorrectas');
     }
 
