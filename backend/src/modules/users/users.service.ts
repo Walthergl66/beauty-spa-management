@@ -31,7 +31,7 @@ export class UsersService {
       passwordHash,
       firstName: createUserDto.firstName,
       lastName: createUserDto.lastName,
-      phone: createUserDto.phone ?? null,
+      phone: createUserDto.phone,
       role: createUserDto.role || Role.CLIENT,
     });
 
