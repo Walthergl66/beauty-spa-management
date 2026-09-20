@@ -15,6 +15,7 @@ describe('AuthService', () => {
       findById: vi.fn(),
       create: vi.fn(),
       updateRefreshToken: vi.fn(),
+      updateLoginSecurity: vi.fn(),
     };
 
     mockJwtService = {
@@ -181,5 +182,76 @@ describe('AuthService', () => {
         password: 'WrongPassword',
       }),
     ).rejects.toThrow('Credenciales incorrectas');
+    expect(mockUsersService.updateLoginSecurity).toHaveBeenCalledWith(
+      'uuid-1',
+      1,
+      null,
+    );
+  });
+
+  it('should lock the account after 5 consecutive failed attempts', async () => {
+    const passwordHash = await authService.hashData('CorrectPassword');
+    mockUsersService.findByEmail.mockResolvedValue({
+      id: 'uuid-1',
+      email: 'test@test.com',
+      passwordHash,
+      isActive: true,
+      failedLoginAttempts: 4,
+    });
+
+    await expect(
+      authService.login({
+        email: 'test@test.com',
+        password: 'WrongPassword',
+      }),
+    ).rejects.toThrow('Cuenta bloqueada temporalmente');
+
+    expect(mockUsersService.updateLoginSecurity).toHaveBeenCalledWith(
+      'uuid-1',
+      0,
+      expect.any(Date),
+    );
+  });
+
+  it('should reject login with correct password while the account is locked', async () => {
+    const passwordHash = await authService.hashData('CorrectPassword');
+    const lockedUntil = new Date(Date.now() + 10 * 60 * 1000);
+    mockUsersService.findByEmail.mockResolvedValue({
+      id: 'uuid-1',
+      email: 'test@test.com',
+      passwordHash,
+      isActive: true,
+      lockedUntil,
+    });
+
+    await expect(
+      authService.login({
+        email: 'test@test.com',
+        password: 'CorrectPassword',
+      }),
+    ).rejects.toThrow('Cuenta bloqueada temporalmente');
+    expect(mockUsersService.updateLoginSecurity).not.toHaveBeenCalled();
+  });
+
+  it('should reset failed attempts on a successful login', async () => {
+    mockUsersService.findByEmail.mockResolvedValue({
+      id: 'uuid-1',
+      email: 'test@test.com',
+      passwordHash: await authService.hashData('CorrectPassword'),
+      isActive: true,
+      failedLoginAttempts: 3,
+    });
+
+    const result = await authService.login({
+      email: 'test@test.com',
+      password: 'CorrectPassword',
+    });
+
+    expect(result.tokens.accessToken).toBe('mock_token');
+    expect(mockUsersService.updateLoginSecurity).toHaveBeenCalledWith(
+      'uuid-1',
+      0,
+      null,
+    );
   });
 });

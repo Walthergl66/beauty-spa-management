@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
   Logger,
   OnApplicationBootstrap,
@@ -22,6 +24,9 @@ interface RefreshTokenPayload {
   email?: string;
   role?: string;
 }
+
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_MINUTES = 15;
 
 @Injectable()
 export class AuthService implements OnApplicationBootstrap {
@@ -76,6 +81,17 @@ export class AuthService implements OnApplicationBootstrap {
       throw new UnauthorizedException('Credenciales incorrectas');
     }
 
+    const now = new Date();
+    if (user.lockedUntil && user.lockedUntil > now) {
+      const remainingMinutes = Math.ceil(
+        (user.lockedUntil.getTime() - now.getTime()) / 60000,
+      );
+      throw new HttpException(
+        `Cuenta bloqueada temporalmente por demasiados intentos fallidos. Inténtalo en ${remainingMinutes} min`,
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+
     if (!user.isActive) {
       throw new UnauthorizedException('Tu cuenta se encuentra desactivada');
     }
@@ -85,7 +101,23 @@ export class AuthService implements OnApplicationBootstrap {
       user.passwordHash,
     );
     if (!passwordMatches) {
+      const attempts = (user.failedLoginAttempts ?? 0) + 1;
+      if (attempts >= MAX_LOGIN_ATTEMPTS) {
+        const lockedUntil = new Date(
+          now.getTime() + LOCKOUT_MINUTES * 60 * 1000,
+        );
+        await this.usersService.updateLoginSecurity(user.id, 0, lockedUntil);
+        throw new HttpException(
+          `Cuenta bloqueada temporalmente por ${MAX_LOGIN_ATTEMPTS} intentos fallidos. Inténtalo en ${LOCKOUT_MINUTES} min`,
+          HttpStatus.TOO_MANY_REQUESTS,
+        );
+      }
+      await this.usersService.updateLoginSecurity(user.id, attempts, null);
       throw new UnauthorizedException('Credenciales incorrectas');
+    }
+
+    if ((user.failedLoginAttempts ?? 0) > 0) {
+      await this.usersService.updateLoginSecurity(user.id, 0, null);
     }
 
     const tokens = await this.generateTokens(user.id, user.email, user.role);

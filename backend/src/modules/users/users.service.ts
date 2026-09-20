@@ -73,6 +73,14 @@ export class UsersService {
     await this.userRepository.update(id, { refreshTokenHash });
   }
 
+  async updateLoginSecurity(
+    id: string,
+    failedLoginAttempts: number,
+    lockedUntil: Date | null,
+  ): Promise<void> {
+    await this.userRepository.update(id, { failedLoginAttempts, lockedUntil });
+  }
+
   async updateRole(id: string, role: Role): Promise<User> {
     const user = await this.findById(id);
     user.role = role;
