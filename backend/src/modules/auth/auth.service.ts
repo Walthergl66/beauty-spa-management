@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Injectable,
   Logger,
+  NotFoundException,
   OnApplicationBootstrap,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -45,8 +46,7 @@ export class AuthService implements OnApplicationBootstrap {
   ) {}
 
   async onApplicationBootstrap() {
-    const forceSeed =
-      this.configService.get<string>('SEED_ADMIN') === 'true';
+    const forceSeed = this.configService.get<string>('SEED_ADMIN') === 'true';
     if (
       this.configService.get<string>('NODE_ENV') === 'production' &&
       !forceSeed
@@ -89,7 +89,7 @@ export class AuthService implements OnApplicationBootstrap {
       user.role,
       user.tokenVersion ?? 0,
     );
-    await this.updateRefreshToken(user.id, tokens.refreshToken);
+    await this.persistTokens(user.id, tokens);
 
     return {
       user: UserResponseDto.fromEntity(user),
@@ -149,7 +149,7 @@ export class AuthService implements OnApplicationBootstrap {
       user.role,
       user.tokenVersion ?? 0,
     );
-    await this.updateRefreshToken(user.id, tokens.refreshToken);
+    await this.persistTokens(user.id, tokens);
 
     return {
       user: UserResponseDto.fromEntity(user),
@@ -158,11 +158,11 @@ export class AuthService implements OnApplicationBootstrap {
   }
 
   async refreshToken(refreshToken: string): Promise<TokensDto> {
-    let payload: RefreshTokenPayload;
+    let payload: TokenPayload;
     try {
       const refreshSecret =
         this.configService.getOrThrow<string>('JWT_REFRESH_SECRET');
-      payload = await this.jwtService.verifyAsync<RefreshTokenPayload>(
+      payload = await this.jwtService.verifyAsync<TokenPayload>(
         refreshToken,
         { secret: refreshSecret },
       );
@@ -171,32 +171,67 @@ export class AuthService implements OnApplicationBootstrap {
     }
 
     const user = await this.usersService.findById(payload.sub);
-    if (!user || !user.isActive || !user.refreshTokenHash) {
+    if (!user || !user.isActive) {
       throw new ForbiddenException('Acceso denegado');
     }
 
-    const refreshTokenMatches = this.compareRefreshTokens(
-      refreshToken,
-      user.refreshTokenHash,
-    );
-    if (!refreshTokenMatches) {
-      throw new ForbiddenException('Token de actualización inválido o expirado');
+    if (payload.sid) {
+      const session = await this.sessionService.findValidById(
+        payload.sid,
+        user.id,
+      );
+      if (!session) {
+        throw new ForbiddenException('Acceso denegado');
+      }
+      if (!this.compareRefreshTokens(refreshToken, session.refreshHash)) {
+        throw new ForbiddenException('Token de actualización inválido o expirado');
+      }
+
+      const tokens = await this.generateTokens(
+        user.id,
+        user.email,
+        user.role,
+        user.tokenVersion ?? 0,
+        payload.sid,
+      );
+      await this.sessionService.rotate(
+        payload.sid,
+        this.hashRefreshToken(tokens.refreshToken),
+        this.sessionExpiry(),
+      );
+      return tokens;
     }
 
-    const tokens = await this.generateTokens(
-      user.id,
-      user.email,
-      user.role,
-      user.tokenVersion ?? 0,
-    );
-    await this.updateRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
+    throw new ForbiddenException('Token de actualización inválido o expirado');
   }
 
-  async logout(userId: string): Promise<{ message: string }> {
-    await this.usersService.incrementTokenVersion(userId);
-    await this.usersService.updateRefreshToken(userId, null);
+  async logout(
+    userId: string,
+    sessionId?: string,
+    all?: boolean,
+  ): Promise<{ message: string }> {
+    if (all) {
+      await this.usersService.incrementTokenVersion(userId);
+      await this.sessionService.deleteAllForUser(userId);
+      return { message: 'Todas las sesiones cerradas exitosamente' };
+    }
+
+    if (!sessionId) {
+      throw new BadRequestException('sessionId es requerido');
+    }
+    const deleted = await this.sessionService.deleteByIdAndUser(
+      sessionId,
+      userId,
+    );
+    if (!deleted) {
+      throw new NotFoundException('Sesión no encontrada');
+    }
     return { message: 'Sesión cerrada exitosamente' };
+  }
+
+  async listSessions(userId: string): Promise<SessionDto[]> {
+    const sessions = await this.sessionService.listActiveForUser(userId);
+    return sessions.map((session) => SessionDto.fromEntity(session));
   }
 
   private async generateTokens(
@@ -204,8 +239,16 @@ export class AuthService implements OnApplicationBootstrap {
     email: string,
     role: string,
     tokenVersion: number,
+    sessionId: string = randomUUID(),
   ): Promise<TokensDto> {
-    const payload = { sub: userId, email, role, jti: randomUUID(), ver: tokenVersion };
+    const payload = {
+      sub: userId,
+      email,
+      role,
+      jti: randomUUID(),
+      ver: tokenVersion,
+      sid: sessionId,
+    };
 
     const accessSecret = this.configService.getOrThrow<string>('JWT_SECRET');
     const refreshSecret =
@@ -233,7 +276,27 @@ export class AuthService implements OnApplicationBootstrap {
       accessToken,
       refreshToken,
       expiresIn: accessExpiresIn,
+      sessionId,
     };
+  }
+
+  private sessionExpiry(): Date {
+    const refreshExpiresIn = this.parseExpiresIn(
+      this.configService.get<string>('JWT_REFRESH_EXPIRES_IN') || '7d',
+    );
+    return new Date(Date.now() + refreshExpiresIn * 1000);
+  }
+
+  private async persistTokens(
+    userId: string,
+    tokens: TokensDto,
+  ): Promise<void> {
+    await this.sessionService.create(
+      userId,
+      this.hashRefreshToken(tokens.refreshToken),
+      this.sessionExpiry(),
+      { id: tokens.sessionId },
+    );
   }
 
   private parseExpiresIn(value: string): number {
@@ -255,11 +318,6 @@ export class AuthService implements OnApplicationBootstrap {
       default:
         return amount;
     }
-  }
-
-  private async updateRefreshToken(userId: string, refreshToken: string): Promise<void> {
-    const hash = this.hashRefreshToken(refreshToken);
-    await this.usersService.updateRefreshToken(userId, hash);
   }
 
   private hashRefreshToken(token: string): string {

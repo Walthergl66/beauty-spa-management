@@ -13,12 +13,23 @@ import { AuthService } from './auth.service.js';
 import { RegisterDto } from './dto/register.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshTokenDto } from './dto/refresh-token.dto.js';
+import { LogoutDto } from './dto/logout.dto.js';
 import { AuthResponseDto, TokensDto } from './dto/auth-response.dto.js';
+import { SessionDto } from './dto/session.dto.js';
 import { Public } from '../../common/decorators/public.decorator.js';
 import { CurrentUser } from '../../common/decorators/current-user.decorator.js';
 import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
 import { UsersService } from '../users/users.service.js';
 import { UserResponseDto } from '../users/dto/user-response.dto.js';
+
+interface AuthenticatedUser {
+  id: string;
+  email: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+  sid: string;
+}
 
 @ApiTags('Autenticación')
 @Controller('auth')
@@ -61,9 +72,24 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ summary: 'Cierre de sesión seguro' })
-  async logout(@CurrentUser('id') userId: string) {
-    return this.authService.logout(userId);
+  @ApiOperation({ summary: 'Cierre de sesión (sesión actual si no se indica sessionId)' })
+  async logout(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: LogoutDto,
+  ) {
+    const sessionId =
+      dto.all === true ? undefined : dto.sessionId ?? user.sid;
+    return this.authService.logout(user.id, sessionId, dto.all === true);
+  }
+
+  @Get('sessions')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Listar sesiones activas del usuario' })
+  @ApiResponse({ status: 200, type: [SessionDto] })
+  async getSessions(
+    @CurrentUser('id') userId: string,
+  ): Promise<SessionDto[]> {
+    return this.authService.listSessions(userId);
   }
 
   @Get('me')

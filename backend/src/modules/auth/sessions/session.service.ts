@@ -14,9 +14,15 @@ export class SessionService {
     userId: string,
     refreshHash: string,
     expiresAt: Date,
-    options: { device?: string | null; userAgent?: string | null; ip?: string | null } = {},
+    options: {
+      id?: string;
+      device?: string | null;
+      userAgent?: string | null;
+      ip?: string | null;
+    } = {},
   ): Promise<AuthSession> {
     const session = this.sessionRepository.create({
+      id: options.id,
       userId,
       refreshHash,
       expiresAt,

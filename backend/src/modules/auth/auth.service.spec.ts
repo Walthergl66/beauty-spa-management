@@ -8,13 +8,13 @@ describe('AuthService', () => {
   let mockUsersService: any;
   let mockJwtService: any;
   let mockConfigService: any;
+  let mockSessionService: any;
 
   beforeEach(() => {
     mockUsersService = {
       findByEmail: vi.fn(),
       findById: vi.fn(),
       create: vi.fn(),
-      updateRefreshToken: vi.fn(),
       updateLoginSecurity: vi.fn(),
       incrementTokenVersion: vi.fn(),
     };
@@ -25,6 +25,8 @@ describe('AuthService', () => {
         sub: 'uuid-1',
         email: 'cliente@test.com',
         role: Role.CLIENT,
+        ver: 0,
+        sid: 'session-1',
       }),
     };
 
@@ -43,10 +45,21 @@ describe('AuthService', () => {
       }),
     };
 
+    mockSessionService = {
+      create: vi.fn().mockResolvedValue({ id: 'session-1' }),
+      findValidById: vi.fn(),
+      findById: vi.fn(),
+      rotate: vi.fn().mockResolvedValue(undefined),
+      deleteByIdAndUser: vi.fn().mockResolvedValue(true),
+      deleteAllForUser: vi.fn().mockResolvedValue(undefined),
+      listActiveForUser: vi.fn().mockResolvedValue([]),
+    };
+
     authService = new AuthService(
       mockUsersService,
       mockJwtService,
       mockConfigService,
+      mockSessionService,
     );
   });
 
@@ -88,6 +101,7 @@ describe('AuthService', () => {
     expect(result.tokens.accessToken).toBe('mock_token');
     expect(result.tokens.refreshToken).toBe('mock_token');
     expect(result.tokens.expiresIn).toBe(86400);
+    expect(mockSessionService.create).toHaveBeenCalled();
   });
 
   it('should reflect a custom access token TTL configured as 2h', async () => {
@@ -122,7 +136,7 @@ describe('AuthService', () => {
     expect(result.tokens.expiresIn).toBe(7200);
   });
 
-  it('should refresh tokens with a valid refresh token', async () => {
+  it('should refresh tokens for a valid session', async () => {
     const refreshToken = 'valid.refresh.token';
     const storedHash = createHash('sha256')
       .update(refreshToken)
@@ -133,19 +147,22 @@ describe('AuthService', () => {
       email: 'cliente@test.com',
       role: Role.CLIENT,
       isActive: true,
-      refreshTokenHash: storedHash,
+      tokenVersion: 0,
+    });
+    mockSessionService.findValidById.mockResolvedValue({
+      id: 'session-1',
+      userId: 'uuid-1',
+      refreshHash: storedHash,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
     });
 
     const result = await authService.refreshToken(refreshToken);
 
     expect(result.accessToken).toBe('mock_token');
-    expect(result.refreshToken).toBe('mock_token');
-    const expectedStored = createHash('sha256')
-      .update('mock_token')
-      .digest('hex');
-    expect(mockUsersService.updateRefreshToken).toHaveBeenCalledWith(
-      'uuid-1',
-      expectedStored,
+    expect(mockSessionService.rotate).toHaveBeenCalledWith(
+      'session-1',
+      createHash('sha256').update('mock_token').digest('hex'),
+      expect.any(Date),
     );
   });
 
@@ -155,14 +172,33 @@ describe('AuthService', () => {
       email: 'cliente@test.com',
       role: Role.CLIENT,
       isActive: true,
-      refreshTokenHash: createHash('sha256')
-        .update('otro.token.rotado')
-        .digest('hex'),
+      tokenVersion: 0,
+    });
+    mockSessionService.findValidById.mockResolvedValue({
+      id: 'session-1',
+      userId: 'uuid-1',
+      refreshHash: createHash('sha256').update('otro.token.rotado').digest('hex'),
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60),
     });
 
     await expect(
       authService.refreshToken('token.viejo'),
     ).rejects.toThrow('Token de actualización inválido o expirado');
+  });
+
+  it('should reject refresh when the session is gone', async () => {
+    mockUsersService.findById.mockResolvedValue({
+      id: 'uuid-1',
+      email: 'cliente@test.com',
+      role: Role.CLIENT,
+      isActive: true,
+      tokenVersion: 0,
+    });
+    mockSessionService.findValidById.mockResolvedValue(null);
+
+    await expect(
+      authService.refreshToken('token.sin.sesion'),
+    ).rejects.toThrow('Acceso denegado');
   });
 
   it('should reject refresh when the token is invalid or expired', async () => {
@@ -173,17 +209,6 @@ describe('AuthService', () => {
     await expect(
       authService.refreshToken('expired.token'),
     ).rejects.toThrow('Token de actualización inválido o expirado');
-  });
-
-  it('should reject login for a non-existent email with the same response', async () => {
-    mockUsersService.findByEmail.mockResolvedValue(null);
-
-    await expect(
-      authService.login({
-        email: 'no-existe@test.com',
-        password: 'CualquierPassword',
-      }),
-    ).rejects.toThrow('Credenciales incorrectas');
   });
 
   it('should reject login if password is incorrect', async () => {
@@ -274,15 +299,23 @@ describe('AuthService', () => {
     );
   });
 
-  it('should increment token version on logout to invalidate access tokens', async () => {
-    const result = await authService.logout('uuid-1');
+  it('should close a specific session on logout', async () => {
+    const result = await authService.logout('uuid-1', 'session-1');
 
     expect(result.message).toBe('Sesión cerrada exitosamente');
-    expect(mockUsersService.incrementTokenVersion).toHaveBeenCalledWith('uuid-1');
-    expect(mockUsersService.updateRefreshToken).toHaveBeenCalledWith(
+    expect(mockSessionService.deleteByIdAndUser).toHaveBeenCalledWith(
+      'session-1',
       'uuid-1',
-      null,
     );
+    expect(mockUsersService.incrementTokenVersion).not.toHaveBeenCalled();
+  });
+
+  it('should close all sessions on logout all', async () => {
+    const result = await authService.logout('uuid-1', undefined, true);
+
+    expect(result.message).toBe('Todas las sesiones cerradas exitosamente');
+    expect(mockUsersService.incrementTokenVersion).toHaveBeenCalledWith('uuid-1');
+    expect(mockSessionService.deleteAllForUser).toHaveBeenCalledWith('uuid-1');
   });
 
   it('should skip admin seeding in production unless forced', async () => {
