@@ -30,6 +30,11 @@ export class PaymentsService {
     if (appointment.status === AppointmentStatus.COMPLETED) {
       throw new BadRequestException('No se puede registrar anticipo en una cita ya completada');
     }
+    if (dto.amount > Number(appointment.totalPrice)) {
+      throw new BadRequestException(
+        `El anticipo (USD ${dto.amount}) no puede superar el total de la cita (USD ${appointment.totalPrice})`,
+      );
+    }
 
     const existing = await this.paymentRepository.findOne({
       where: { appointmentId: dto.appointmentId, status: PaymentStatus.REGISTRADO },

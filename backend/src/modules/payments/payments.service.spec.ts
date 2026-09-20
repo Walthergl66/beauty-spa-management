@@ -17,7 +17,7 @@ describe('PaymentsService (Sprint 7: anticipos)', () => {
   });
 
   it('registra anticipo en cita activa', async () => {
-    mockAppointments.findById.mockResolvedValue({ id: APPT_ID, status: AppointmentStatus.CONFIRMED });
+    mockAppointments.findById.mockResolvedValue({ id: APPT_ID, status: AppointmentStatus.CONFIRMED, totalPrice: 45 });
     mockRepo.findOne.mockResolvedValue(null);
     mockRepo.create.mockImplementation((dto: any) => ({ id: 'pay-1', ...dto }));
     mockRepo.save.mockImplementation(async (e: any) => e);
@@ -29,6 +29,18 @@ describe('PaymentsService (Sprint 7: anticipos)', () => {
     });
     expect(payment.status).toBe(PaymentStatus.REGISTRADO);
     expect(payment.receivedById).toBe('admin-1');
+  });
+
+  it('rechaza anticipo mayor al total de la cita', async () => {
+    mockAppointments.findById.mockResolvedValue({ id: APPT_ID, status: AppointmentStatus.CONFIRMED, totalPrice: 45 });
+
+    await expect(
+      service.register('admin-1', {
+        appointmentId: APPT_ID,
+        amount: 60,
+        method: PaymentMethod.EFECTIVO,
+      }),
+    ).rejects.toThrow('no puede superar el total');
   });
 
   it('rechaza duplicado activo y citas canceladas', async () => {
