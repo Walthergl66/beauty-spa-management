@@ -28,6 +28,10 @@ export class EnvironmentVariables {
 
   @IsString()
   @IsOptional()
+  CORS_ORIGIN: string = 'http://localhost:5173';
+
+  @IsString()
+  @IsOptional()
   DB_HOST: string = 'localhost';
 
   @IsNumber()

@@ -23,9 +23,14 @@ async function bootstrap() {
     }),
   );
 
-  // CORS
+  // CORS: whitelist de orígenes configurable; '*' habilita cualquier origen
+  const corsOrigin = configService.get<string>('CORS_ORIGIN', 'http://localhost:5173');
+  const corsOrigins = corsOrigin
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
   app.enableCors({
-    origin: true,
+    origin: corsOrigins.includes('*') ? true : corsOrigins,
     credentials: true,
   });
 
