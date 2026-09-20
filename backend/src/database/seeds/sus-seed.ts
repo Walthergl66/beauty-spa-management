@@ -30,14 +30,14 @@ const SERVICES = [
 ];
 
 const SPECIALISTS = [
-  { email: 'ana.paz@oasisspa.com', password: 'Terapeuta123*', firstName: 'Ana', lastName: 'Paz', specialty: 'Masoterapia', bio: 'Especialista en masajes relajantes y descontracturantes.' },
-  { email: 'luis.vega@oasisspa.com', password: 'Terapeuta123*', firstName: 'Luis', lastName: 'Vega', specialty: 'Estética facial', bio: 'Experto en limpiezas e hidrataciones faciales.' },
-  { email: 'carla.ruiz@oasisspa.com', password: 'Terapeuta123*', firstName: 'Carla', lastName: 'Ruiz', specialty: 'Tratamientos corporales', bio: 'Especialista en exfoliaciones y chocolaterapia.' },
+  { email: 'ana.paz@spa.com', password: 'Terapeuta123*', firstName: 'Ana', lastName: 'Paz', specialty: 'Masoterapia', bio: 'Especialista en masajes relajantes y descontracturantes.' },
+  { email: 'luis.vega@spa.com', password: 'Terapeuta123*', firstName: 'Luis', lastName: 'Vega', specialty: 'Estética facial', bio: 'Experto en limpiezas e hidrataciones faciales.' },
+  { email: 'carla.ruiz@spa.com', password: 'Terapeuta123*', firstName: 'Carla', lastName: 'Ruiz', specialty: 'Tratamientos corporales', bio: 'Especialista en exfoliaciones y chocolaterapia.' },
 ];
 
 const TEST_CLIENTS = [
-  { email: 'cliente.sus@oasisspa.com', password: 'Cliente123*', firstName: 'Sofía', lastName: 'Mendoza' },
-  { email: 'cliente2.sus@oasisspa.com', password: 'Cliente123*', firstName: 'Diego', lastName: 'Torres' },
+  { email: 'cliente.sus@spa.com', password: 'Cliente123*', firstName: 'Sofía', lastName: 'Mendoza' },
+  { email: 'cliente2.sus@spa.com', password: 'Cliente123*', firstName: 'Diego', lastName: 'Torres' },
 ];
 
 @Module({

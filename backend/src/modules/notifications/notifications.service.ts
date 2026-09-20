@@ -49,7 +49,7 @@ export class NotificationsService implements OnModuleInit {
     const publicKey = this.configService.get<string>('VAPID_PUBLIC_KEY', '');
     const privateKey = this.configService.get<string>('VAPID_PRIVATE_KEY', '');
     const subject =
-      this.configService.get<string>('VAPID_SUBJECT') ?? 'mailto:soporte@oasisspa.com';
+      this.configService.get<string>('VAPID_SUBJECT') ?? 'mailto:soporte@spa.com';
 
     if (publicKey && privateKey && !publicKey.includes('mock')) {
       webpush.setVapidDetails(subject, publicKey, privateKey);

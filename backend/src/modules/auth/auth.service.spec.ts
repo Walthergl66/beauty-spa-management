@@ -24,7 +24,7 @@ describe('AuthService', () => {
       get: vi.fn((key: string) => {
         if (key === 'JWT_SECRET') return 'test_jwt_secret';
         if (key === 'JWT_REFRESH_SECRET') return 'test_jwt_refresh_secret';
-        if (key === 'ADMIN_EMAIL') return 'admin@oasisspa.com';
+        if (key === 'ADMIN_EMAIL') return 'admin@spa.com';
         return undefined;
       }),
     };

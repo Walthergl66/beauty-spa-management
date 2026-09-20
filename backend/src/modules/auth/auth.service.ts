@@ -153,7 +153,7 @@ export class AuthService implements OnApplicationBootstrap {
 
   async seedAdmin(): Promise<void> {
     const adminEmail =
-      this.configService.get<string>('ADMIN_EMAIL') || 'admin@oasisspa.com';
+      this.configService.get<string>('ADMIN_EMAIL') || 'admin@spa.com';
     const existingAdmin = await this.usersService.findByEmail(adminEmail);
 
     if (!existingAdmin) {
@@ -168,7 +168,7 @@ export class AuthService implements OnApplicationBootstrap {
           password: adminPassword,
           firstName:
             this.configService.get<string>('ADMIN_FIRST_NAME') || 'Administrador',
-          lastName: this.configService.get<string>('ADMIN_LAST_NAME') || 'Oasis',
+          lastName: this.configService.get<string>('ADMIN_LAST_NAME') || 'Spa',
           phone:
             this.configService.get<string>('ADMIN_PHONE') || '+593999999999',
           role: Role.ADMIN,

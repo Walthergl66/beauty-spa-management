@@ -16,10 +16,10 @@ describe('Flujos completos (e2e, requiere DB)', () => {
   let dbUp = false;
 
   const tag = Date.now();
-  const clientEmail = `e2e.client.${tag}@oasisspa.com`;
-  const empEmail = `e2e.emp.${tag}@oasisspa.com`;
+  const clientEmail = `e2e.client.${tag}@spa.com`;
+  const empEmail = `e2e.emp.${tag}@spa.com`;
   const password = 'E2ePassword123*';
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@oasisspa.com';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@spa.com';
   const adminPassword = process.env.ADMIN_PASSWORD || 'Admin1234*';
 
   let clientToken = '';

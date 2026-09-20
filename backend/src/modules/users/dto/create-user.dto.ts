@@ -10,7 +10,7 @@ import {
 import { Role } from '../../../common/enums/role.enum.js';
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'cliente@oasisspa.com', description: 'Correo electrónico único' })
+  @ApiProperty({ example: 'cliente@spa.com', description: 'Correo electrónico único' })
   @IsEmail({}, { message: 'El correo electrónico no es válido' })
   @IsNotEmpty({ message: 'El correo electrónico es requerido' })
   email: string;
