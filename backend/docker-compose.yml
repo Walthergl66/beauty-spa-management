@@ -18,6 +18,25 @@ services:
       timeout: 5s
       retries: 5
 
+  # Backend NestJS en SU PROPIO contenedor, independiente del de Postgres:
+  # cada uno se levanta, reinicia y reconstruye por separado
+  # (docker compose up -d postgres | docker compose up -d --build api).
+  api:
+    build: .
+    container_name: oasis_spa_api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Dentro de la red de compose el host de la DB es el servicio, no localhost
+      DB_HOST: postgres
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   oasis_postgres_data:
     name: oasis_postgres_data
