@@ -21,6 +21,7 @@ import { UserResponseDto } from '../users/dto/user-response.dto.js';
 import { Role } from '../../common/enums/role.enum.js';
 import { SessionService } from './sessions/session.service.js';
 import { SessionDto } from './dto/session.dto.js';
+import { ChangePasswordDto } from './dto/change-password.dto.js';
 
 interface TokenPayload {
   sub: string;
@@ -77,7 +78,11 @@ export class AuthService implements OnApplicationBootstrap {
     const passwordHash = await this.hashData(registerDto.password);
     const user = await this.usersService.create(
       {
-        ...registerDto,
+        email: registerDto.email,
+        password: registerDto.password,
+        firstName: registerDto.firstName,
+        lastName: registerDto.lastName,
+        phone: registerDto.phone,
         role: Role.CLIENT,
       },
       passwordHash,
@@ -232,6 +237,34 @@ export class AuthService implements OnApplicationBootstrap {
   async listSessions(userId: string): Promise<SessionDto[]> {
     const sessions = await this.sessionService.listActiveForUser(userId);
     return sessions.map((session) => SessionDto.fromEntity(session));
+  }
+
+  async changePassword(
+    userId: string,
+    dto: ChangePasswordDto,
+  ): Promise<{ message: string }> {
+    const user = await this.usersService.findById(userId);
+    if (!user.isActive) {
+      throw new UnauthorizedException('Tu cuenta se encuentra desactivada');
+    }
+
+    const matches = await this.compareData(dto.currentPassword, user.passwordHash);
+    if (!matches) {
+      throw new UnauthorizedException('La contraseña actual es incorrecta');
+    }
+
+    if (dto.currentPassword === dto.newPassword) {
+      throw new BadRequestException(
+        'La nueva contraseña debe ser diferente a la actual',
+      );
+    }
+
+    const passwordHash = await this.hashData(dto.newPassword);
+    await this.usersService.updatePassword(userId, passwordHash);
+    await this.usersService.incrementTokenVersion(userId);
+    await this.sessionService.deleteAllForUser(userId);
+
+    return { message: 'Contraseña actualizada correctamente. Vuelve a iniciar sesión' };
   }
 
   private async generateTokens(

@@ -14,6 +14,7 @@ import { RegisterDto } from './dto/register.dto.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RefreshTokenDto } from './dto/refresh-token.dto.js';
 import { LogoutDto } from './dto/logout.dto.js';
+import { ChangePasswordDto } from './dto/change-password.dto.js';
 import { AuthResponseDto, TokensDto } from './dto/auth-response.dto.js';
 import { SessionDto } from './dto/session.dto.js';
 import { Public } from '../../common/decorators/public.decorator.js';
@@ -99,5 +100,16 @@ export class AuthController {
   async getProfile(@CurrentUser('id') userId: string): Promise<UserResponseDto> {
     const user = await this.usersService.findById(userId);
     return UserResponseDto.fromEntity(user);
+  }
+
+  @Post('change-password')
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Cambiar la contraseña del usuario autenticado' })
+  async changePassword(
+    @CurrentUser('id') userId: string,
+    @Body() dto: ChangePasswordDto,
+  ): Promise<{ message: string }> {
+    return this.authService.changePassword(userId, dto);
   }
 }

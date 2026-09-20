@@ -318,6 +318,45 @@ describe('AuthService', () => {
     expect(mockSessionService.deleteAllForUser).toHaveBeenCalledWith('uuid-1');
   });
 
+  it('should change the password and invalidate current sessions', async () => {
+    mockUsersService.findById.mockResolvedValue({
+      id: 'uuid-1',
+      passwordHash: await authService.hashData('CurrentPass123!'),
+      isActive: true,
+    });
+    mockUsersService.updatePassword = vi.fn().mockResolvedValue(undefined);
+    mockUsersService.incrementTokenVersion = vi.fn().mockResolvedValue(undefined);
+    mockSessionService.deleteAllForUser = vi.fn().mockResolvedValue(undefined);
+
+    const result = await authService.changePassword('uuid-1', {
+      currentPassword: 'CurrentPass123!',
+      newPassword: 'NewPass456!',
+    });
+
+    expect(result.message).toContain('Contraseña actualizada');
+    expect(mockUsersService.updatePassword).toHaveBeenCalledWith(
+      'uuid-1',
+      expect.any(String),
+    );
+    expect(mockUsersService.incrementTokenVersion).toHaveBeenCalledWith('uuid-1');
+    expect(mockSessionService.deleteAllForUser).toHaveBeenCalledWith('uuid-1');
+  });
+
+  it('should reject change password when the current password is wrong', async () => {
+    mockUsersService.findById.mockResolvedValue({
+      id: 'uuid-1',
+      passwordHash: await authService.hashData('CurrentPass123!'),
+      isActive: true,
+    });
+
+    await expect(
+      authService.changePassword('uuid-1', {
+        currentPassword: 'WrongPass123!',
+        newPassword: 'NewPass456!',
+      }),
+    ).rejects.toThrow('La contraseña actual es incorrecta');
+  });
+
   it('should skip admin seeding in production unless forced', async () => {
     mockConfigService.get = vi.fn((key: string) => {
       if (key === 'NODE_ENV') return 'production';
