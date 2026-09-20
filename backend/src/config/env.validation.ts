@@ -101,6 +101,10 @@ export class EnvironmentVariables {
 
   @IsString()
   ADMIN_PASSWORD: string;
+
+  @IsString()
+  @IsOptional()
+  SEED_ADMIN: string = 'false';
 }
 
 export function validate(config: Record<string, unknown>) {

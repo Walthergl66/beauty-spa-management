@@ -41,6 +41,17 @@ export class AuthService implements OnApplicationBootstrap {
   ) {}
 
   async onApplicationBootstrap() {
+    const forceSeed =
+      this.configService.get<string>('SEED_ADMIN') === 'true';
+    if (
+      this.configService.get<string>('NODE_ENV') === 'production' &&
+      !forceSeed
+    ) {
+      this.logger.log(
+        'Seed de administrador omitido en producción (define SEED_ADMIN=true para forzarlo)',
+      );
+      return;
+    }
     await this.seedAdmin();
   }
 

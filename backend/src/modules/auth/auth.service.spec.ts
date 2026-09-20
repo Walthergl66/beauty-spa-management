@@ -284,4 +284,34 @@ describe('AuthService', () => {
       null,
     );
   });
+
+  it('should skip admin seeding in production unless forced', async () => {
+    mockConfigService.get = vi.fn((key: string) => {
+      if (key === 'NODE_ENV') return 'production';
+      return undefined;
+    });
+
+    await authService.onApplicationBootstrap();
+    expect(mockUsersService.findByEmail).not.toHaveBeenCalled();
+
+    mockConfigService.get = vi.fn((key: string) => {
+      if (key === 'NODE_ENV') return 'production';
+      if (key === 'SEED_ADMIN') return 'true';
+      return undefined;
+    });
+    mockConfigService.getOrThrow = vi.fn((key: string) => {
+      if (key === 'ADMIN_EMAIL') return 'admin@spa.com';
+      if (key === 'ADMIN_PASSWORD') return 'Admin1234*';
+      return undefined;
+    });
+    mockUsersService.findByEmail.mockResolvedValue(null);
+    mockUsersService.create.mockResolvedValue({
+      id: 'uuid-9',
+      email: 'admin@spa.com',
+      role: Role.ADMIN,
+    });
+
+    await authService.onApplicationBootstrap();
+    expect(mockUsersService.findByEmail).toHaveBeenCalled();
+  });
 });
