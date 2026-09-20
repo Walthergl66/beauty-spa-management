@@ -170,8 +170,10 @@ describe('Flujos completos (e2e, requiere DB)', () => {
 
   it('dashboard admin refleja el movimiento', async () => {
     if (!dbUp) return;
+    const upcomingEnd = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000);
     const summary = await request(app.getHttpServer())
       .get('/api/v1/dashboard/summary')
+      .query({ endDate: upcomingEnd.toISOString() })
       .set('Authorization', `Bearer ${adminToken}`)
       .expect(200);
     expect(dataOf(summary).total).toBeGreaterThanOrEqual(1);
