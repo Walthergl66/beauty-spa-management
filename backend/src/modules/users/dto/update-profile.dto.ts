@@ -12,7 +12,7 @@ export class UpdateProfileDto {
   @IsOptional()
   lastName?: string;
 
-  @ApiPropertyOptional({ example: '+593987654321', description: 'Número telefónico de contacto' })
+  @ApiPropertyOptional({ example: '0987654321', description: 'Número telefónico de contacto' })
   @IsString()
   @IsOptional()
   phone?: string;
