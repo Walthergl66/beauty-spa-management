@@ -36,8 +36,8 @@
   --shadow-gold: 0 4px 15px rgba(212, 175, 55, 0.15);
 
   /* Tipografía */
-  --font-heading: 'Cormorant Garamond', serif;
-  --font-body: 'Montserrat', sans-serif;
+  --font-heading: 'Jost', sans-serif;
+  --font-body: 'Poppins', sans-serif;
 
   /* Espaciado */
   --spacing-xs: 0.5rem;

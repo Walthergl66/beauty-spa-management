@@ -1,5 +1,14 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
+
+const heroImages = [
+  'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=1200&q=80',
+  'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=1200&q=80',
+  'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=1200&q=80',
+  'https://images.unsplash.com/photo-1457972729786-0411a3b2b626?w=1200&q=80',
+  'https://images.unsplash.com/photo-1509967199874-51c8fb92d195?w=1200&q=80',
+];
 
 const features = [
   {
@@ -46,10 +55,27 @@ const testimonials = [
 ];
 
 export default function Home() {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % heroImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="home">
       {/* Hero Section */}
       <section className="home__hero">
+        {heroImages.map((src, index) => (
+          <div
+            key={index}
+            className={`home__hero-slide ${index === currentImage ? 'home__hero-slide--active' : ''}`}
+            style={{ backgroundImage: `url(${src})` }}
+          />
+        ))}
+        <div className="home__hero-overlay" />
         <div className="container home__hero-content">
           <div className="home__hero-text">
             <h1 className="home__hero-title">
@@ -68,11 +94,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="home__hero-image">
-            <div className="home__hero-placeholder">
-              <img src="/Principal.png" alt="Shirley Franco" className="home__hero-logo" />
-            </div>
-          </div>
+          <img src="/Prin.png" alt="Shirley Franco" className="home__hero-logo" />
         </div>
       </section>
 
