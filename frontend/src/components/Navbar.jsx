@@ -12,7 +12,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="container navbar__container">
         <Link to="/" className="navbar__logo" onClick={closeMenu}>
-          <img src="/LogoSF2.png" alt="Sherley Franco - Técnica en belleza" className="navbar__logo-img" />
+          <img src="/logo.png" alt="Shirley Franco - Técnica en belleza" className="navbar__logo-img" />
         </Link>
 
         <nav className={`navbar__menu ${isOpen ? 'navbar__menu--open' : ''}`}>

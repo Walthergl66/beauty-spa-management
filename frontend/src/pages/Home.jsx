@@ -70,7 +70,7 @@ export default function Home() {
           </div>
           <div className="home__hero-image">
             <div className="home__hero-placeholder">
-              <img src="/SF1.png" alt="Shirley Franco" className="home__hero-logo" />
+              <img src="/Principal.png" alt="Shirley Franco" className="home__hero-logo" />
             </div>
           </div>
         </div>

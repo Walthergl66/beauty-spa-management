@@ -40,19 +40,20 @@
 }
 
 .home__hero-placeholder {
-  width: 340px;
-  height: 340px;
+  width: 360px;
+  height: 360px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, #FDF5F6 0%, #E3AAAA 100%);
-  border: 2px solid var(--color-blush-100);
+  background: var(--color-white);
+  border: 1px solid rgba(227, 170, 170, 0.3);
+  outline: 6px solid rgba(227, 170, 170, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 12px 40px rgba(227, 170, 170, 0.15);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(227, 170, 170, 0.08);
 }
 
 .home__hero-logo {
-  width: 240px;
+  width: 260px;
   height: auto;
   object-fit: contain;
 }
