@@ -1,0 +1,111 @@
+.auth-page {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-2xl) var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-blush-100));
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--color-white);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-card__header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.auth-card__icon {
+  font-size: 2.5rem;
+  color: var(--color-gold-400);
+  display: block;
+  margin-bottom: var(--spacing-md);
+}
+
+.auth-card__title {
+  font-size: 1.75rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.auth-card__subtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.auth-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.auth-form__group {
+  margin-bottom: var(--spacing-md);
+}
+
+.auth-form__label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.auth-form__options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  font-size: 0.85rem;
+}
+
+.auth-form__remember {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.auth-form__forgot {
+  color: var(--color-gold-500);
+  text-decoration: none;
+}
+
+.auth-form__forgot:hover {
+  text-decoration: underline;
+}
+
+.auth-card__footer {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.auth-card__link {
+  color: var(--color-gold-500);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.auth-card__link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: var(--spacing-xl);
+  }
+
+  .auth-form__row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,98 @@
+.appointments__header {
+  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-blush-100));
+  padding: var(--spacing-2xl) 0;
+}
+
+.appointments__title {
+  font-size: 2.25rem;
+}
+
+.appointments__subtitle {
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.appointments__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.appointment-card {
+  padding: var(--spacing-xl);
+}
+
+.appointment-card__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg);
+}
+
+.appointment-card__service {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-xs);
+}
+
+.appointment-card__specialist {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.appointment-card__details {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.appointment-card__detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.appointment-card__label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.appointment-card__value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.appointment-card__price {
+  color: var(--color-gold-500);
+  font-size: 1.1rem;
+}
+
+.appointment-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.appointment-card__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+@media (max-width: 700px) {
+  .appointment-card__main {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .appointment-card__details {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .appointment-card__detail {
+    align-items: flex-start;
+  }
+}

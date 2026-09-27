@@ -1,0 +1,184 @@
+import { Link } from 'react-router-dom';
+import './Home.css';
+
+const features = [
+  {
+    icon: '✦',
+    title: 'Reserva Fácil',
+    description: 'Agenda tu cita en pocos clics, disponibles 24/7 desde cualquier dispositivo.',
+  },
+  {
+    icon: '❀',
+    title: 'Personal Certificado',
+    description: 'Nuestro equipo de especialistas está altamente capacitado para brindarte la mejor atención.',
+  },
+  {
+    icon: '♡',
+    title: 'Ambiente Relajante',
+    description: 'Disfruta de un espacio diseñado para tu confort y bienestar integral.',
+  },
+  {
+    icon: '✧',
+    title: 'Productos Premium',
+    description: 'Utilizamos productos de alta calidad para resultados excepcionales.',
+  },
+];
+
+const testimonials = [
+  {
+    name: 'María González',
+    service: 'Facial Rejuvenecedor',
+    text: 'Una experiencia increíble. El ambiente es hermoso y el personal muy atento. Mi piel se siente renovada.',
+    rating: 5,
+  },
+  {
+    name: 'Carolina Ruiz',
+    service: 'Masaje Relajante',
+    text: 'El mejor spa al que he asistido. Todo impecable, desde la reservación hasta el servicio. Totalmente recomendado.',
+    rating: 5,
+  },
+  {
+    name: 'Ana Martínez',
+    service: 'Manicure y Pedicure',
+    text: 'Servicio de primera calidad. El asistente virtual me ayudó a elegir el perfecto para mí.',
+    rating: 5,
+  },
+];
+
+export default function Home() {
+  return (
+    <div className="home">
+      {/* Hero Section */}
+      <section className="home__hero">
+        <div className="container home__hero-content">
+          <div className="home__hero-text">
+            <span className="home__hero-badge">Bienvenido a Sherley Franco</span>
+            <h1 className="home__hero-title">
+              Tu espacio de <span className="text-gold">belleza</span> y bienestar
+            </h1>
+            <p className="home__hero-description">
+              Descubre una experiencia única de relajación y cuidado personal.
+              Reserva tus citas y déjanos consentirte como mereces.
+            </p>
+            <div className="home__hero-actions">
+              <Link to="/book" className="btn btn--primary">
+                Reservar Ahora
+              </Link>
+              <Link to="/services" className="btn btn--secondary">
+                Ver Servicios
+              </Link>
+            </div>
+          </div>
+          <div className="home__hero-image">
+            <div className="home__hero-placeholder">
+              <span className="home__hero-icon">SF</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="section section--blush">
+        <div className="container">
+          <div className="text-center">
+            <h2 className="home__section-title">¿Por qué elegirnos?</h2>
+            <hr className="divider" />
+          </div>
+          <div className="home__features">
+            {features.map((feature, index) => (
+              <div key={index} className="home__feature card">
+                <span className="home__feature-icon">{feature.icon}</span>
+                <h3 className="home__feature-title">{feature.title}</h3>
+                <p className="home__feature-text">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services Preview */}
+      <section className="section">
+        <div className="container">
+          <div className="text-center">
+            <h2 className="home__section-title">Nuestros Servicios</h2>
+            <hr className="divider" />
+            <p className="home__section-subtitle">
+              Descubre nuestra variedad de tratamientos diseñados para tu bienestar
+            </p>
+          </div>
+          <div className="home__services">
+            <div className="home__service-card">
+              <div className="home__service-image">
+                <span>✦</span>
+              </div>
+              <div className="home__service-content">
+                <h3>Faciales</h3>
+                <p>Tratamientos rejuvenecedores y limpieza profunda para tu piel.</p>
+              </div>
+            </div>
+            <div className="home__service-card">
+              <div className="home__service-image">
+                <span>❀</span>
+              </div>
+              <div className="home__service-content">
+                <h3>Masajes</h3>
+                <p>Relajación total con nuestros terapeutas certificados.</p>
+              </div>
+            </div>
+            <div className="home__service-card">
+              <div className="home__service-image">
+                <span>♡</span>
+              </div>
+              <div className="home__service-content">
+                <h3>Uñas</h3>
+                <p>Manicure, pedicure y diseños exclusivos para ti.</p>
+              </div>
+            </div>
+          </div>
+          <div className="text-center" style={{ marginTop: 'var(--spacing-2xl)' }}>
+            <Link to="/services" className="btn btn--outline">
+              Ver Todos los Servicios
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="section section--blush">
+        <div className="container">
+          <div className="text-center">
+            <h2 className="home__section-title">Lo que dicen nuestras clientas</h2>
+            <hr className="divider" />
+          </div>
+          <div className="home__testimonials">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="home__testimonial card">
+                <div className="home__testimonial-stars">
+                  {'★'.repeat(testimonial.rating)}
+                </div>
+                <p className="home__testimonial-text">"{testimonial.text}"</p>
+                <div className="home__testimonial-author">
+                  <strong>{testimonial.name}</strong>
+                  <span>{testimonial.service}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="section home__cta">
+        <div className="container text-center">
+          <h2 className="home__cta-title">¿Lista para consentirte?</h2>
+          <p className="home__cta-text">
+            Reserva tu cita hoy y vive la experiencia Sherley Franco
+          </p>
+          <Link to="/book" className="btn btn--primary">
+            Reservar Mi Cita
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}

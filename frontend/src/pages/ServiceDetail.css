@@ -1,0 +1,116 @@
+.service-detail__hero {
+  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-blush-100));
+  padding: var(--spacing-2xl) 0;
+}
+
+.service-detail__back {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-lg);
+  transition: color var(--transition-fast);
+}
+
+.service-detail__back:hover {
+  color: var(--color-gold-500);
+}
+
+.service-detail__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.service-detail__icon {
+  font-size: 3rem;
+  color: var(--color-gold-400);
+}
+
+.service-detail__title {
+  font-size: 2.25rem;
+  margin-top: var(--spacing-sm);
+}
+
+.service-detail__content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-2xl);
+}
+
+.service-detail__section-title {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-primary);
+}
+
+.service-detail__description {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.service-detail__benefits {
+  list-style: none;
+}
+
+.service-detail__benefits li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.service-detail__check {
+  color: var(--color-gold-400);
+  font-weight: bold;
+}
+
+.service-detail__booking {
+  position: sticky;
+  top: 100px;
+}
+
+.service-detail__booking-title {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.service-detail__info {
+  margin-bottom: var(--spacing-lg);
+}
+
+.service-detail__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.95rem;
+}
+
+.service-detail__info-row span {
+  color: var(--color-text-secondary);
+}
+
+.service-detail__price {
+  font-size: 1.5rem;
+  color: var(--color-gold-500);
+}
+
+.service-detail__note {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--spacing-md);
+}
+
+@media (max-width: 800px) {
+  .service-detail__content {
+    grid-template-columns: 1fr;
+  }
+
+  .service-detail__booking {
+    position: static;
+  }
+}
