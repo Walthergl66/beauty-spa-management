@@ -31,15 +31,17 @@ export default function Navbar() {
           <NavLink to="/dashboard" className="navbar__link" onClick={closeMenu}>
             Dashboard
           </NavLink>
-          <div className="navbar__actions">
-            <Link to="/login" className="btn btn--ghost btn--sm" onClick={closeMenu}>
-              Iniciar Sesión
-            </Link>
-            <Link to="/register" className="btn btn--primary btn--sm" onClick={closeMenu}>
-              Registrarse
-            </Link>
-          </div>
         </nav>
+
+        <div className="navbar__actions">
+          <Link to="/login" className="btn btn--ghost btn--sm" onClick={closeMenu}>
+            Iniciar Sesión
+          </Link>
+          <span className="navbar__divider" aria-hidden="true"></span>
+          <Link to="/register" className="btn btn--ghost btn--sm" onClick={closeMenu}>
+            Registrarse
+          </Link>
+        </div>
 
         <button
           className={`navbar__toggle ${isOpen ? 'navbar__toggle--open' : ''}`}
