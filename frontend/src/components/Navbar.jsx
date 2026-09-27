@@ -25,9 +25,6 @@ export default function Navbar() {
           <NavLink to="/book" className="navbar__link" onClick={closeMenu}>
             Reservar
           </NavLink>
-          <NavLink to="/assistant" className="navbar__link" onClick={closeMenu}>
-            Asistente
-          </NavLink>
           <NavLink to="/dashboard" className="navbar__link" onClick={closeMenu}>
             Dashboard
           </NavLink>

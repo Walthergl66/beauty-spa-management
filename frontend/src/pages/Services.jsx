@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Services.css';
 
@@ -79,6 +80,12 @@ const services = [
 const categories = ['Todos', 'Facial', 'Masaje', 'Uñas', 'Cabello'];
 
 export default function Services() {
+  const [activeCategory, setActiveCategory] = useState('Todos');
+
+  const filteredServices = activeCategory === 'Todos'
+    ? services
+    : services.filter((service) => service.category === activeCategory);
+
   return (
     <div className="services-page">
       <section className="services-hero">
@@ -97,7 +104,8 @@ export default function Services() {
             {categories.map((category) => (
               <button
                 key={category}
-                className={`services-filter__btn ${category === 'Todos' ? 'services-filter__btn--active' : ''}`}
+                className={`services-filter__btn ${category === activeCategory ? 'services-filter__btn--active' : ''}`}
+                onClick={() => setActiveCategory(category)}
               >
                 {category}
               </button>
@@ -105,7 +113,7 @@ export default function Services() {
           </div>
 
           <div className="services-grid">
-            {services.map((service) => (
+            {filteredServices.map((service) => (
               <div key={service.id} className="service-card card">
                 <div className="service-card__header">
                   <span className="service-card__icon">{service.icon}</span>
