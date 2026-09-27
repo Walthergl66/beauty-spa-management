@@ -52,7 +52,6 @@ export default function Home() {
       <section className="home__hero">
         <div className="container home__hero-content">
           <div className="home__hero-text">
-            <span className="home__hero-badge">Bienvenido a Sherley Franco</span>
             <h1 className="home__hero-title">
               Tu espacio de <span className="text-gold">belleza</span> y bienestar
             </h1>
@@ -71,7 +70,7 @@ export default function Home() {
           </div>
           <div className="home__hero-image">
             <div className="home__hero-placeholder">
-              <span className="home__hero-icon">SF</span>
+              <img src="/SF1.png" alt="Shirley Franco" className="home__hero-logo" />
             </div>
           </div>
         </div>
@@ -172,7 +171,7 @@ export default function Home() {
         <div className="container text-center">
           <h2 className="home__cta-title">¿Lista para consentirte?</h2>
           <p className="home__cta-text">
-            Reserva tu cita hoy y vive la experiencia Sherley Franco
+            Reserva tu cita hoy y vive la experiencia Shirley Franco
           </p>
           <Link to="/book" className="btn btn--primary">
             Reservar Mi Cita

@@ -5,7 +5,7 @@ const initialMessages = [
   {
     id: 1,
     role: 'assistant',
-    content: '¡Hola! Soy tu asistente virtual de Sherley Franco Spa. Estoy aquí para ayudarte con tus reservas, consultar servicios o cualquier duda que tengas. ¿En qué puedo ayudarte hoy?',
+    content: '¡Hola! Soy tu asistente virtual de Shirley Franco Spa. Estoy aquí para ayudarte con tus reservas, consultar servicios o cualquier duda que tengas. ¿En qué puedo ayudarte hoy?',
   },
 ];
 

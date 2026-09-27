@@ -10,11 +10,12 @@
   max-width: 400px;
 }
 
-.notfound__icon {
-  font-size: 3rem;
-  color: var(--color-gold-400);
+.notfound__logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
   display: block;
-  margin-bottom: var(--spacing-md);
+  margin: 0 auto var(--spacing-md);
 }
 
 .notfound__code {

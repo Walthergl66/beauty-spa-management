@@ -6,9 +6,9 @@ export default function Login() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-card__header">
-          <span className="auth-card__icon">SF</span>
+          <img src="/LogoSF.png" alt="Shirley Franco" className="auth-card__logo" />
           <h1 className="auth-card__title">Bienvenida de vuelta</h1>
-          <p className="auth-card__subtitle">Ingresa a Sherley Franco Spa</p>
+          <p className="auth-card__subtitle">Ingresa a Shirley Franco Spa</p>
         </div>
 
         <form className="auth-form">

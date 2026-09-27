@@ -19,25 +19,10 @@
   margin-bottom: var(--spacing-md);
 }
 
-.footer__logo-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--color-blush-200), var(--color-gold-300));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--color-gold-600);
-  letter-spacing: 0.05em;
-}
-
-.footer__logo-text {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-text-primary);
+.footer__logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
 }
 
 .footer__description {

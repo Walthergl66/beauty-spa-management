@@ -21,11 +21,12 @@
   margin-bottom: var(--spacing-xl);
 }
 
-.auth-card__icon {
-  font-size: 2.5rem;
-  color: var(--color-gold-400);
+.auth-card__logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
   display: block;
-  margin-bottom: var(--spacing-md);
+  margin: 0 auto var(--spacing-md);
 }
 
 .auth-card__title {

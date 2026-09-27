@@ -8,8 +8,7 @@ export default function Footer() {
         <div className="footer__grid">
           <div className="footer__brand">
             <div className="footer__logo">
-              <span className="footer__logo-icon">SF</span>
-              <span className="footer__logo-text">Sherley Franco</span>
+              <img src="/LogoSF.png" alt="Shirley Franco" className="footer__logo-img" />
             </div>
             <p className="footer__description">
               Tu espacio de belleza y bienestar. Reserva tus citas y disfruta de
@@ -44,7 +43,7 @@ export default function Footer() {
 
         <div className="footer__bottom">
           <p className="footer__copy">
-            &copy; {new Date().getFullYear()} Sherley Franco. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} Shirley Franco. Todos los derechos reservados.
           </p>
         </div>
       </div>
