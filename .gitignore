@@ -20,6 +20,9 @@ npm-debug.log*
 .vscode/
 .idea/
 
+# opencode local (skills van global en ~/.config/opencode/skills)
+.opencode/
+
 # OS files
 .DS_Store
 Thumbs.db

@@ -1,22 +1,25 @@
 /* ============================================
    BELLEZASPA — Design System
-   Paleta: Blanco, Rosa Palo, Dorado
+   Principales: Blanco #FFFFFF, Palo Rosa #E3AAAA
+   Detalles: Dorado (botones, reflejos, efectos)
    ============================================ */
 
 :root {
-  /* Colores principales */
+  /* Blanco — color principal de fondo */
   --color-white: #FFFFFF;
-  --color-blush-50: #FDF5F6;
+
+  /* Palo rosa — color principal */
+  --color-blush-50: #FBF1F1;
   --color-blush-100: #E3AAAA;
-  --color-blush-200: #D98E8E;
+  --color-blush-200: #D99898;
   --color-blush-300: #CC7A7A;
   --color-blush-400: #C06A6A;
 
-  /* Dorado */
+  /* Dorado — solo pequeños detalles */
   --color-gold-300: #E8D4A0;
   --color-gold-400: #D4AF37;
-  --color-gold-500: #C9A96E;
-  --color-gold-600: #B8956A;
+  --color-gold-500: #C9A227;
+  --color-gold-600: #A8861D;
 
   /* Neutros / Texto */
   --color-text-primary: #2D2D2D;
@@ -24,10 +27,10 @@
   --color-text-muted: #9A9A9A;
   --color-border: #E8E8E8;
 
-  /* Fondo */
+  /* Fondo — blanco y tintes de palo rosa */
   --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #FDF8F9;
-  --color-bg-accent: #F8E1E7;
+  --color-bg-secondary: #FBF1F1;
+  --color-bg-accent: #F3D9D9;
 
   /* Sombras */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -177,6 +180,27 @@ select {
   background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-500));
   color: var(--color-white);
   box-shadow: var(--shadow-gold);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Reflejo dorado que cruza el botón al hover */
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.btn--primary:hover::after {
+  left: 135%;
 }
 
 .btn--primary:hover {
@@ -187,12 +211,13 @@ select {
 .btn--secondary {
   background: var(--color-white);
   color: var(--color-text-primary);
-  border-color: var(--color-blush-200);
+  border-color: var(--color-blush-100);
 }
 
 .btn--secondary:hover {
   border-color: var(--color-gold-400);
   color: var(--color-gold-500);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
 .btn--outline {
@@ -237,6 +262,31 @@ select {
 .card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+/* Selección palo rosa */
+::selection {
+  background: var(--color-blush-100);
+  color: var(--color-text-primary);
+}
+
+/* Títulos con subrayado dorado */
+.title-gold-underline {
+  position: relative;
+  display: inline-block;
+  padding-bottom: var(--spacing-xs);
+}
+
+.title-gold-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-gold-400), transparent);
+  border-radius: 1px;
 }
 
 /* Inputs */

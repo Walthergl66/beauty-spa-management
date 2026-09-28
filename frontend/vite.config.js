@@ -12,16 +12,18 @@ export default defineConfig({
         name: 'Sherley Franco - Gestión de Citas',
         short_name: 'SF Spa',
         description: 'Sistema de gestión de citas para Sherley Franco Spa',
-        theme_color: '#F8E1E7',
+        theme_color: '#E3AAAA',
         background_color: '#FFFFFF',
         display: 'standalone',
         orientation: 'portrait',
         start_url: '/',
+        scope: '/',
         icons: [
           {
             src: '/icons/icon-192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any',
           },
           {
             src: '/icons/icon-512.png',
@@ -33,6 +35,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/^\/api/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

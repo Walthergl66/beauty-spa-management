@@ -10,9 +10,11 @@
 .home__hero-content {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-3xl);
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -34,6 +36,7 @@
   display: flex;
   gap: var(--spacing-md);
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .home__hero-slide {
@@ -52,7 +55,7 @@
 .home__hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(45, 45, 45, 0.65) 0%, rgba(45, 45, 45, 0.45) 60%, rgba(45, 45, 45, 0.30) 100%);
+  background: linear-gradient(135deg, rgba(45, 45, 45, 0.6) 0%, rgba(120, 70, 70, 0.35) 55%, rgba(227, 170, 170, 0.35) 100%);
   z-index: 1;
 }
 
@@ -154,7 +157,8 @@
 
 .home__service-image {
   height: 180px;
-  background: linear-gradient(135deg, var(--color-blush-100), var(--color-blush-200));
+  background: linear-gradient(135deg, var(--color-blush-100), var(--color-blush-50));
+  border-bottom: 2px solid var(--color-gold-400);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -218,9 +222,13 @@
   color: var(--color-text-muted);
 }
 
-/* CTA */
+/* CTA — fondo blanco con halo palo rosa y filete dorado */
 .home__cta {
-  background: linear-gradient(135deg, var(--color-blush-100), var(--color-gold-300));
+  background:
+    radial-gradient(ellipse 60% 90% at 50% 110%, rgba(227, 170, 170, 0.35), transparent),
+    var(--color-white);
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--color-gold-400), transparent) 1;
 }
 
 .home__cta-title {

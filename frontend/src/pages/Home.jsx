@@ -94,7 +94,6 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <img src="/Prin.png" alt="Shirley Franco" className="home__hero-logo" />
         </div>
       </section>
 
