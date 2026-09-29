@@ -135,6 +135,11 @@
   color: var(--color-text-primary);
 }
 
+/* Botón volver: solo mobile (pantalla completa estilo chat) */
+.floating-assistant__back {
+  display: none;
+}
+
 /* Messages */
 .floating-assistant__messages {
   flex: 1;
@@ -318,31 +323,66 @@
   cursor: not-allowed;
 }
 
-/* Mobile Adaptation: el widget flota sobre el BottomNav */
+/* Mobile: chat a pantalla completa estilo WhatsApp.
+   La apertura es ocasional: transición estándar corta. */
 @media (max-width: 900px) {
   .floating-assistant {
     bottom: calc(88px + env(safe-area-inset-bottom));
     right: 16px;
-    left: 16px;
-    align-items: stretch;
   }
 
   .floating-assistant__button {
-    align-self: flex-end;
     width: 56px;
     height: 56px;
   }
 
-  .floating-assistant__panel {
+  .floating-assistant--open .floating-assistant__panel {
+    position: fixed;
+    inset: 0;
     width: 100%;
     max-width: 100%;
-    height: calc(100vh - 220px);
-    max-height: calc(100vh - 220px);
-    position: fixed;
-    bottom: calc(160px + env(safe-area-inset-bottom));
-    right: 16px;
-    left: 16px;
-    width: calc(100vw - 32px);
+    height: 100dvh;
+    max-height: 100dvh;
+    border: none;
+    border-radius: 0;
+    transform-origin: bottom center;
+  }
+
+  /* En pantalla completa el regreso es el botón volver, no el flotante */
+  .floating-assistant--open .floating-assistant__button {
+    display: none;
+  }
+
+  .floating-assistant__header {
+    padding-top: calc(12px + env(safe-area-inset-top));
+  }
+
+  .floating-assistant__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 4px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: background 160ms ease-out;
+  }
+
+  .floating-assistant__back:active {
+    transform: scale(0.96);
+    transition: transform 100ms ease-out, background 160ms ease-out;
+  }
+
+  .floating-assistant__close {
+    display: none;
+  }
+
+  .floating-assistant__input-area {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
   }
 }
 
