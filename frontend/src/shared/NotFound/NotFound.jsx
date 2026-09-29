@@ -7,7 +7,7 @@ export default function NotFound() {
     <div className="notfound-page">
       <div className="container text-center">
         <div className="notfound__content">
-          <img src="/LogoSF.png" alt="Shirley Franco" className="notfound__logo" />
+          <img src="/si.png" alt="Shirley Franco" className="notfound__logo" />
           <h1 className="notfound__code">404</h1>
           <h2 className="notfound__title">Página no encontrada</h2>
           <p className="notfound__text">
