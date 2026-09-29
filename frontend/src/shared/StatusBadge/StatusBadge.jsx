@@ -1,7 +1,21 @@
-import { statusLabels, statusClasses } from '@/mocks/index.js';
+// Badge de estado único — etiquetas y clases alineadas al enum
+// AppointmentStatus del backend (PENDING/CONFIRMED/COMPLETED/CANCELLED/NO_SHOW).
+const statusLabels = {
+  PENDING: 'Pendiente',
+  CONFIRMED: 'Confirmada',
+  COMPLETED: 'Completada',
+  CANCELLED: 'Cancelada',
+  NO_SHOW: 'No asistió',
+};
 
-// Badge de estado único — reemplaza las copias de
-// statusLabels/statusClasses que vivían en cada página.
+const statusClasses = {
+  PENDING: 'badge--gold',
+  CONFIRMED: 'badge--green',
+  COMPLETED: 'badge--blush',
+  CANCELLED: 'badge--red',
+  NO_SHOW: 'badge--red',
+};
+
 export default function StatusBadge({ status }) {
   return (
     <span className={`badge ${statusClasses[status] ?? 'badge--blush'}`}>

@@ -81,6 +81,18 @@
   gap: var(--spacing-sm);
 }
 
+.appointment-card__action-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-md);
+}
+
+.appointment-card__action-error {
+  color: #C0392B;
+  font-size: 0.875rem;
+}
+
 @media (max-width: 700px) {
   .appointment-card__main {
     flex-direction: column;
