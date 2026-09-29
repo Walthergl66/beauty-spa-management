@@ -1,25 +1,8 @@
 import { Link } from 'react-router-dom';
+import { user, recentActivity } from '@/mocks/index.js';
+import { StatusBadge } from '@/shared/index.js';
+import { ROUTES } from '@/routes/index.js';
 import './Profile.css';
-
-const user = {
-  firstName: 'María',
-  lastName: 'González',
-  email: 'maria@email.com',
-  phone: '+593 99 123 4567',
-  role: 'Cliente',
-  avatar: 'MG',
-  memberSince: 'Enero 2024',
-  totalAppointments: 24,
-  completedAppointments: 20,
-  cancelledAppointments: 4,
-};
-
-const recentActivity = [
-  { id: 1, type: 'appointment', description: 'Limpieza Facial Profunda', date: '28 Sep 2026', status: 'confirmed' },
-  { id: 2, type: 'appointment', description: 'Masaje Relajante Corporal', date: '2 Oct 2026', status: 'pending' },
-  { id: 3, type: 'payment', description: 'Pago de Manicure Clásica - $25', date: '20 Sep 2026', status: 'completed' },
-  { id: 4, type: 'appointment', description: 'Tratamiento Anti-Edad', date: '15 Sep 2026', status: 'completed' },
-];
 
 export default function Profile() {
   return (
@@ -31,7 +14,7 @@ export default function Profile() {
         </div>
       </section>
 
-      <section className="section" style={{ paddingTop: 'var(--spacing-xl)' }}>
+      <section className="section section--tight">
         <div className="container">
           <div className="profile__layout">
             {/* Profile Card */}
@@ -79,12 +62,12 @@ export default function Profile() {
                     <span className="badge badge--gold">{user.role}</span>
                   </div>
                 </div>
-                <button className="btn btn--secondary btn--block" style={{ marginTop: 'var(--spacing-lg)' }}>
+                <button className="btn btn--secondary btn--block mt-lg">
                   Editar Información
                 </button>
               </div>
 
-              <div className="card" style={{ marginTop: 'var(--spacing-xl)' }}>
+              <div className="card mt-xl">
                 <h3 className="profile__section-title">Actividad Reciente</h3>
                 <div className="profile__activity">
                   {recentActivity.map((item) => (
@@ -93,24 +76,16 @@ export default function Profile() {
                         <span className="profile__activity-desc">{item.description}</span>
                         <span className="profile__activity-date">{item.date}</span>
                       </div>
-                      <span className={`badge ${
-                        item.status === 'confirmed' ? 'badge--green' :
-                        item.status === 'pending' ? 'badge--gold' :
-                        item.status === 'completed' ? 'badge--blush' : 'badge--red'
-                      }`}>
-                        {item.status === 'confirmed' ? 'Confirmada' :
-                         item.status === 'pending' ? 'Pendiente' :
-                         item.status === 'completed' ? 'Completada' : 'Cancelada'}
-                      </span>
+                      <StatusBadge status={item.status} />
                     </div>
                   ))}
                 </div>
-                <Link to="/appointments" className="btn btn--ghost btn--block" style={{ marginTop: 'var(--spacing-lg)' }}>
+                <Link to={ROUTES.appointments} className="btn btn--ghost btn--block mt-lg">
                   Ver Todas las Citas
                 </Link>
               </div>
 
-              <div className="card" style={{ marginTop: 'var(--spacing-xl)' }}>
+              <div className="card mt-xl">
                 <h3 className="profile__section-title">Configuración</h3>
                 <div className="profile__settings">
                   <button className="profile__setting">
