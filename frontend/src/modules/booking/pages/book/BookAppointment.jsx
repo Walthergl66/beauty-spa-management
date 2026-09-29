@@ -1,29 +1,5 @@
-import { Link } from 'react-router-dom';
 import './BookAppointment.css';
-
-const services = [
-  { id: '1', name: 'Limpieza Facial Profunda', duration: 60, price: 45 },
-  { id: '2', name: 'Tratamiento Anti-Edad', duration: 75, price: 65 },
-  { id: '3', name: 'Masaje Relajante Corporal', duration: 90, price: 55 },
-  { id: '4', name: 'Masaje con Piedras Calientes', duration: 75, price: 70 },
-  { id: '5', name: 'Manicure Clásica', duration: 45, price: 25 },
-  { id: '6', name: 'Pedicure Spa', duration: 60, price: 35 },
-  { id: '7', name: 'Peinado para Eventos', duration: 60, price: 50 },
-  { id: '8', name: 'Colorimetría y Tinte', duration: 120, price: 80 },
-];
-
-const specialists = [
-  { id: '1', name: 'Dra. Elena Vargas', specialty: 'Facial', avatar: 'EV' },
-  { id: '2', name: 'Lic. Carmen Morales', specialty: 'Masaje', avatar: 'CM' },
-  { id: '3', name: 'Lic. Sofia Reyes', specialty: 'Uñas', avatar: 'SR' },
-  { id: '4', name: 'Lic. Andrea Torres', specialty: 'Cabello', avatar: 'AT' },
-];
-
-const timeSlots = [
-  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-  '12:00', '12:30', '14:00', '14:30', '15:00', '15:30',
-  '16:00', '16:30', '17:00', '17:30',
-];
+import { services, specialists, timeSlots } from '@/mocks/index.js';
 
 export default function BookAppointment() {
   return (
@@ -35,7 +11,7 @@ export default function BookAppointment() {
         </div>
       </section>
 
-      <section className="section" style={{ paddingTop: 'var(--spacing-xl)' }}>
+      <section className="section section--tight">
         <div className="container">
           <div className="book__steps">
             <div className="book__step book__step--active">
@@ -78,7 +54,7 @@ export default function BookAppointment() {
                 </div>
               </div>
 
-              <div className="card" style={{ marginTop: 'var(--spacing-xl)' }}>
+              <div className="card mt-xl">
                 <h2 className="book__section-title">Selecciona un Especialista</h2>
                 <div className="book__specialists">
                   {specialists.map((specialist) => (
@@ -94,7 +70,7 @@ export default function BookAppointment() {
                 </div>
               </div>
 
-              <div className="card" style={{ marginTop: 'var(--spacing-xl)' }}>
+              <div className="card mt-xl">
                 <h2 className="book__section-title">Selecciona Fecha y Hora</h2>
                 <div className="book__datetime">
                   <div className="book__date">
