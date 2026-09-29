@@ -194,6 +194,30 @@
   color: #C0392B;
 }
 
+.profile__password-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.profile__form-error {
+  color: #C0392B;
+  font-size: 0.875rem;
+}
+
+.profile__form-success {
+  color: #2E7D5B;
+  font-size: 0.875rem;
+}
+
+.profile__empty {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
 @media (max-width: 800px) {
   .profile__layout {
     grid-template-columns: 1fr;
