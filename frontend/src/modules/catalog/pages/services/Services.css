@@ -68,6 +68,13 @@
   color: var(--color-gold-400);
 }
 
+.service-card__image {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
 .service-card__name {
   font-size: 1.1rem;
   margin-bottom: var(--spacing-xs);
