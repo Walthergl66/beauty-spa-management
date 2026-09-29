@@ -22,8 +22,9 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Compensa la barra fija para que el footer no quede tapado */
-  .layout {
+  /* Compensa la barra fija para que el footer no quede tapado.
+     Solo cuando la barra existe (no en login/registro). */
+  .layout:has(.bottomnav) {
     padding-bottom: calc(72px + env(safe-area-inset-bottom));
   }
 

@@ -72,69 +72,45 @@
   background: var(--color-gold-400);
 }
 
-.navbar__toggle {
+/* Avatar solo mobile: la navegación vive en el BottomNav */
+.navbar__avatar {
   display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  padding: 5px;
-}
-
-.navbar__toggle span {
-  width: 24px;
-  height: 2px;
-  background: var(--color-text-primary);
-  border-radius: 2px;
-  transition: all var(--transition-fast);
-}
-
-.navbar__toggle--open span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.navbar__toggle--open span:nth-child(2) {
-  opacity: 0;
-}
-
-.navbar__toggle--open span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
 }
 
 @media (max-width: 900px) {
-  .navbar__toggle {
-    display: flex;
+  .navbar__container {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    height: 60px;
   }
 
-  .navbar__menu {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    flex-direction: column;
-    justify-content: center;
-    background: var(--color-white);
-    gap: var(--spacing-xl);
-    transform: translateX(100%);
-    transition: transform var(--transition-base);
+  .navbar__logo-img {
+    height: 46px;
   }
 
-  .navbar__menu--open {
-    transform: translateX(0);
-  }
-
-  .navbar__link {
-    font-size: 1.1rem;
-  }
-
+  .navbar__menu,
   .navbar__actions {
-    flex-direction: column;
-    margin-left: 0;
-    gap: var(--spacing-md);
+    display: none;
   }
 
-  .navbar__divider {
-    width: 20px;
-    height: 1px;
+  .navbar__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-blush-100);
+    color: var(--color-gold-600);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: border-color 150ms ease-out;
+  }
+
+  .navbar__avatar:active {
+    transform: scale(0.96);
+    transition: transform 100ms ease-out, border-color 150ms ease-out;
   }
 }

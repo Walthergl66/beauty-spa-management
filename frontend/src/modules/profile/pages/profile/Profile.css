@@ -177,6 +177,7 @@
   background: var(--color-white);
   font-size: 0.9rem;
   color: var(--color-text-secondary);
+  text-decoration: none;
   transition: all var(--transition-fast);
 }
 

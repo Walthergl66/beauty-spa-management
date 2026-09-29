@@ -318,10 +318,10 @@
   cursor: not-allowed;
 }
 
-/* Mobile Adaptation */
-@media (max-width: 480px) {
+/* Mobile Adaptation: el widget flota sobre el BottomNav */
+@media (max-width: 900px) {
   .floating-assistant {
-    bottom: 16px;
+    bottom: calc(88px + env(safe-area-inset-bottom));
     right: 16px;
     left: 16px;
     align-items: stretch;
@@ -336,10 +336,10 @@
   .floating-assistant__panel {
     width: 100%;
     max-width: 100%;
-    height: calc(100vh - 100px);
-    max-height: calc(100vh - 100px);
+    height: calc(100vh - 220px);
+    max-height: calc(100vh - 220px);
     position: fixed;
-    bottom: 88px;
+    bottom: calc(160px + env(safe-area-inset-bottom));
     right: 16px;
     left: 16px;
     width: calc(100vw - 32px);

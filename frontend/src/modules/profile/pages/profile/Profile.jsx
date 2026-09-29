@@ -17,9 +17,8 @@ function formatDate(iso) {
 
 export default function Profile() {
   useRequireAuth();
-  const { user, refreshUser, logout } = useAuth();
+  const { user, isAdmin, refreshUser, logout } = useAuth();
   const navigate = useNavigate();
-
   const [appointments, setAppointments] = useState([]);
   const [editing, setEditing] = useState(false);
   const [profileForm, setProfileForm] = useState({ firstName: '', lastName: '', phone: '' });
@@ -263,6 +262,12 @@ export default function Profile() {
               <div className="card mt-xl">
                 <h3 className="profile__section-title">Configuración</h3>
                 <div className="profile__settings">
+                  {isAdmin && (
+                    <Link to={ROUTES.dashboard} className="profile__setting">
+                      <span>Panel Administrativo</span>
+                      <span>→</span>
+                    </Link>
+                  )}
                   <button
                     type="button"
                     className="profile__setting"
