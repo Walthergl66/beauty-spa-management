@@ -1,48 +1,27 @@
 import { useState } from 'react';
-import { initialMessages, quickActions, simulatedReply } from '@/mocks/index.js';
+import { Link } from 'react-router-dom';
+import { useAssistantChat } from '@/modules/assistant/index.js';
+import { useAuth } from '@/modules/auth/index.js';
+import { ROUTES } from '@/routes/index.js';
 import './FloatingAssistant.css';
 
 export default function FloatingAssistant() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState(initialMessages);
   const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const { messages, sending, error, sendMessage } = useAssistantChat();
 
   const toggleChat = () => setIsOpen(!isOpen);
 
   const handleSend = () => {
-    if (!input.trim() || isTyping) return;
-
-    const newMessage = {
-      id: messages.length + 1,
-      role: 'user',
-      content: input,
-    };
-
-    setMessages([...messages, newMessage]);
+    if (!input.trim()) return;
+    sendMessage(input);
     setInput('');
-    setIsTyping(true);
-
-    setTimeout(() => {
-      const response = {
-        id: messages.length + 2,
-        role: 'assistant',
-        content: simulatedReply,
-      };
-      setMessages((prev) => [...prev, response]);
-      setIsTyping(false);
-    }, 1000);
-  };
-
-  const handleQuickAction = (label) => {
-    setInput(label);
   };
 
   return (
     <div className={`floating-assistant ${isOpen ? 'floating-assistant--open' : ''}`}>
-      {/* Chat Panel */}
       <div className="floating-assistant__panel" role="dialog" aria-label="Asistente virtual">
-        {/* Header */}
         <div className="floating-assistant__header">
           <div className="floating-assistant__header-info">
             <span className="floating-assistant__avatar">✦</span>
@@ -63,19 +42,20 @@ export default function FloatingAssistant() {
           </button>
         </div>
 
-        {/* Messages */}
         <div className="floating-assistant__messages">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`floating-assistant__message ${msg.role === 'user' ? 'floating-assistant__message--user' : 'floating-assistant__message--assistant'}`}
-            >
-              <div className="floating-assistant__bubble">
-                {msg.content}
+          {messages
+            .filter((msg) => msg.role !== 'system')
+            .map((msg) => (
+              <div
+                key={msg.id}
+                className={`floating-assistant__message ${msg.role === 'user' ? 'floating-assistant__message--user' : 'floating-assistant__message--assistant'}`}
+              >
+                <div className="floating-assistant__bubble">
+                  {msg.content}
+                </div>
               </div>
-            </div>
-          ))}
-          {isTyping && (
+            ))}
+          {sending && (
             <div className="floating-assistant__message floating-assistant__message--assistant">
               <div className="floating-assistant__bubble floating-assistant__bubble--typing">
                 <span></span>
@@ -84,42 +64,47 @@ export default function FloatingAssistant() {
               </div>
             </div>
           )}
+          {messages.length === 0 && !sending && (
+            <div className="floating-assistant__message floating-assistant__message--assistant">
+              <div className="floating-assistant__bubble">
+                ¡Hola! Puedo ayudarte a reservar o ver tus citas.
+              </div>
+            </div>
+          )}
         </div>
+        {error && (
+          <p className="floating-assistant__error" role="alert">
+            {error}
+          </p>
+        )}
 
-        {/* Quick Actions */}
-        <div className="floating-assistant__quick-actions">
-          {quickActions.map((action, index) => (
-            <button
-              key={index}
-              className="floating-assistant__quick-action"
-              onClick={() => handleQuickAction(action.label)}
-            >
-              <span className="floating-assistant__quick-icon">{action.icon}</span>
-              {action.label}
+        {isAuthenticated ? (
+          <div className="floating-assistant__input-area">
+            <input
+              type="text"
+              className="floating-assistant__input"
+              placeholder="Escribe tu mensaje..."
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              onKeyDown={(event) => event.key === 'Enter' && handleSend()}
+              disabled={sending}
+            />
+            <button className="floating-assistant__send" onClick={handleSend} disabled={sending}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
             </button>
-          ))}
-        </div>
-
-        {/* Input */}
-        <div className="floating-assistant__input-area">
-          <input
-            type="text"
-            className="floating-assistant__input"
-            placeholder="Escribe tu mensaje..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          />
-          <button className="floating-assistant__send" onClick={handleSend} disabled={isTyping}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-          </button>
-        </div>
+          </div>
+        ) : (
+          <div className="floating-assistant__input-area">
+            <Link to={ROUTES.login} className="btn btn--primary btn--block btn--sm">
+              Inicia sesión para chatear
+            </Link>
+          </div>
+        )}
       </div>
 
-      {/* Floating Button */}
       <button
         className="floating-assistant__button"
         onClick={toggleChat}

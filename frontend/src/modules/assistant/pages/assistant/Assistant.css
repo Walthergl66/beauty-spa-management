@@ -83,6 +83,23 @@
   background: var(--color-bg-secondary);
 }
 
+.assistant__conversation--active {
+  background: var(--color-bg-secondary);
+  box-shadow: inset 2px 0 0 var(--color-gold-400);
+}
+
+.assistant__empty {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  padding: var(--spacing-md);
+}
+
+.assistant__error {
+  color: #C0392B;
+  font-size: 0.875rem;
+  padding: 0 var(--spacing-md) var(--spacing-sm);
+}
+
 .assistant__conversation-title {
   font-size: 0.85rem;
   font-weight: 500;

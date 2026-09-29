@@ -259,6 +259,12 @@
   font-size: 0.9rem;
 }
 
+.floating-assistant__error {
+  color: #C0392B;
+  font-size: 0.8rem;
+  padding: 0 16px 8px;
+}
+
 /* Input Area */
 .floating-assistant__input-area {
   display: flex;
