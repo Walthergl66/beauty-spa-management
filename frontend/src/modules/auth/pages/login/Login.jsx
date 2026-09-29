@@ -1,8 +1,31 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/index.js';
+import { useAuth } from '@/modules/auth/index.js';
 import '../../Auth.css';
 
 export default function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setFormError(null);
+    setSubmitting(true);
+    try {
+      const me = await login({ email: email.trim(), password });
+      navigate(me?.role === 'ADMIN' ? ROUTES.dashboard : ROUTES.appointments, { replace: true });
+    } catch (err) {
+      setFormError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -12,14 +35,17 @@ export default function Login() {
           <p className="auth-card__subtitle">Ingresa a Shirley Franco Spa</p>
         </div>
 
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-form__group">
             <label className="auth-form__label">Correo Electrónico</label>
             <input
               type="email"
               className="input"
               placeholder="tu@email.com"
-              defaultValue="cliente@sherleyfranco.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+              autoComplete="email"
             />
           </div>
 
@@ -29,20 +55,21 @@ export default function Login() {
               type="password"
               className="input"
               placeholder="••••••••"
-              defaultValue="password123"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+              autoComplete="current-password"
             />
           </div>
 
-          <div className="auth-form__options">
-            <label className="auth-form__remember">
-              <input type="checkbox" defaultChecked />
-              <span>Recordarme</span>
-            </label>
-            <a href="#" className="auth-form__forgot">¿Olvidaste tu contraseña?</a>
-          </div>
+          {formError && (
+            <p className="auth-form__error" role="alert">
+              {formError}
+            </p>
+          )}
 
-          <button type="submit" className="btn btn--primary btn--block">
-            Iniciar Sesión
+          <button type="submit" className="btn btn--primary btn--block" disabled={submitting}>
+            {submitting ? 'Ingresando…' : 'Iniciar Sesión'}
           </button>
         </form>
 
