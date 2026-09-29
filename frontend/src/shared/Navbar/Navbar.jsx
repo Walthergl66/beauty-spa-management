@@ -23,27 +23,27 @@ export default function Navbar() {
           <img src="/si.png" alt="Shirley Franco - Técnica en belleza" className="navbar__logo-img" />
         </Link>
 
-        <nav className="navbar__menu" aria-label="Navegación de escritorio">
-          <NavLink to={ROUTES.home} className="navbar__link">
-            Inicio
-          </NavLink>
-          <NavLink to={ROUTES.services} className="navbar__link">
-            Servicios
-          </NavLink>
-          <NavLink to={ROUTES.book} className="navbar__link">
-            Reservar
-          </NavLink>
-          {isAuthenticated && (
+        {isAuthenticated && (
+          <nav className="navbar__menu" aria-label="Navegación de escritorio">
+            <NavLink to={ROUTES.home} className="navbar__link">
+              Inicio
+            </NavLink>
+            <NavLink to={ROUTES.services} className="navbar__link">
+              Servicios
+            </NavLink>
+            <NavLink to={ROUTES.book} className="navbar__link">
+              Reservar
+            </NavLink>
             <NavLink to={ROUTES.appointments} className="navbar__link">
               Mis Citas
             </NavLink>
-          )}
-          {isAdmin && (
-            <NavLink to={ROUTES.dashboard} className="navbar__link">
-              Dashboard
-            </NavLink>
-          )}
-        </nav>
+            {isAdmin && (
+              <NavLink to={ROUTES.dashboard} className="navbar__link">
+                Dashboard
+              </NavLink>
+            )}
+          </nav>
+        )}
 
         <div className="navbar__actions">
           {isAuthenticated ? (
