@@ -14,6 +14,8 @@ Monorepo sin workspace root: `backend/` (NestJS 12 API real) + `frontend/` (Reac
 ## Frontend (`frontend/`)
 
 - `npm run dev` → `:5173`; `vite.config.js` proxea `/api` → `localhost:3000`. PWA (`vite-plugin-pwa`). Sin lint/test/typecheck. No cablear aún llamadas reales sin coordinar forma del envelope `{ success, data }`.
+- Arquitectura modular (`src/`): `modules/{home|catalog|booking|auth|dashboard|assistant|profile}/` (páginas como directorios + `index.js` barrel + `README.md`) + `shared/` (Layout, Navbar, Footer, FloatingAssistant, NotFound, StatusBadge vía barrel) + `routes/` (`ROUTES` + `AppRoutes`) + `mocks/` (datos simulados centrales, temporal hasta conectar backend). Alias `@` → `src/` (ver `vite.config.js` y `jsconfig.json`); imports a barrels SIEMPRE con `/index.js` explícito (el build con rollup no resuelve directorios).
+- Reglas: cero rutas hardcodeadas (usar `ROUTES`), cero `style={{}}` (clases en `styles/global.css`: `.section--tight`, `.mt-lg/.mt-xl/.mt-2xl`), datos mock solo desde `@/mocks/index.js`, estados vía `StatusBadge`.
 
 ## Notas de repo
 

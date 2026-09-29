@@ -154,6 +154,15 @@ select {
   background-color: var(--color-bg-secondary);
 }
 
+/* Sección compacta (headers de página seguidos de contenido) */
+.section--tight {
+  padding-top: var(--spacing-xl);
+}
+
+.mt-lg { margin-top: var(--spacing-lg); }
+.mt-xl { margin-top: var(--spacing-xl); }
+.mt-2xl { margin-top: var(--spacing-2xl); }
+
 .text-center { text-align: center; }
 .text-gold { color: var(--color-gold-500); }
 
