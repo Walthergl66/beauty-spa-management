@@ -3,4 +3,4 @@
 Autenticación: login (`/login`) y registro (`/register`).
 
 - Páginas: `pages/login/`, `pages/register/` (comparten `Auth.css` del módulo).
-- Pendiente: formularios controlados + `services/auth.service.js` contra el backend.
+- Sesión: `context/AuthContext.jsx` (`AuthProvider`, `useAuth`, `useRequireAuth`) contra el backend (`POST /auth/login|register|refresh|logout`, `GET /auth/me`).

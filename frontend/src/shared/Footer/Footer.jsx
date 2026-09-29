@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom';
-import { contact } from '@/mocks/index.js';
 import { ROUTES } from '@/routes/index.js';
 import './Footer.css';
+
+// Datos de contacto del negocio (copy del sitio, editable aquí).
+const CONTACT = {
+  addressLines: ['Av. Principal 1234', 'Quito, Ecuador'],
+  phone: '+593 99 999 9999',
+  email: 'hola@sherleyfranco.com',
+};
 
 export default function Footer() {
   return (
@@ -36,11 +42,11 @@ export default function Footer() {
 
           <div className="footer__column">
             <h4 className="footer__title">Contacto</h4>
-            {contact.addressLines.map((line) => (
+            {CONTACT.addressLines.map((line) => (
               <p key={line} className="footer__text">{line}</p>
             ))}
-            <p className="footer__text">{contact.phone}</p>
-            <p className="footer__text">{contact.email}</p>
+            <p className="footer__text">{CONTACT.phone}</p>
+            <p className="footer__text">{CONTACT.email}</p>
           </div>
         </div>
 

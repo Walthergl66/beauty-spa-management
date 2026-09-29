@@ -1,7 +1,7 @@
 # Módulo assistant
 
-Asistente virtual: página full (`/assistant`) + widget flotante global.
+Asistente virtual: página full (`/assistant`, protegida) + widget flotante global.
 
 - Página: `pages/assistant/` (chat + sidebar de conversaciones).
-- El widget `FloatingAssistant` vive en `@/shared` (se monta en `Layout`) y comparte datos de `@/mocks` (`initialMessages`, `quickActions`, `simulatedReply`).
-- Pendiente: conectar a `POST /api/v1/assistant/chat` del backend.
+- Estado compartido: `hooks/useAssistantChat.js` contra el backend (`POST /assistant/chat`, `GET /assistant/conversations[/:id]`).
+- El widget `FloatingAssistant` vive en `@/shared` (se monta en `Layout`) y usa el mismo hook; si no hay sesión muestra el CTA de login.
