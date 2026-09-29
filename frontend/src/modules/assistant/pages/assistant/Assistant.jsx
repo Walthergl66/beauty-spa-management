@@ -1,26 +1,6 @@
 import { useState } from 'react';
+import { initialMessages, quickActions, conversations, simulatedReply } from '@/mocks/index.js';
 import './Assistant.css';
-
-const initialMessages = [
-  {
-    id: 1,
-    role: 'assistant',
-    content: '¡Hola! Soy tu asistente virtual de Shirley Franco Spa. Estoy aquí para ayudarte con tus reservas, consultar servicios o cualquier duda que tengas. ¿En qué puedo ayudarte hoy?',
-  },
-];
-
-const quickActions = [
-  { label: 'Ver servicios', icon: '✦' },
-  { label: 'Reservar cita', icon: '📅' },
-  { label: 'Horarios disponibles', icon: '🕐' },
-  { label: 'Precios', icon: '💰' },
-];
-
-const conversations = [
-  { id: 1, title: 'Consulta sobre faciales', date: 'Hoy' },
-  { id: 2, title: 'Reserva de masaje', date: 'Ayer' },
-  { id: 3, title: 'Información de horarios', date: 'Hace 3 días' },
-];
 
 export default function Assistant() {
   const [messages, setMessages] = useState(initialMessages);
@@ -43,7 +23,7 @@ export default function Assistant() {
       const response = {
         id: messages.length + 2,
         role: 'assistant',
-        content: 'Gracias por tu mensaje. Estoy procesando tu consulta. Un momento por favor... ✨',
+        content: simulatedReply,
       };
       setMessages((prev) => [...prev, response]);
     }, 1000);
@@ -62,7 +42,7 @@ export default function Assistant() {
         </div>
       </section>
 
-      <section className="section" style={{ paddingTop: 'var(--spacing-xl)' }}>
+      <section className="section section--tight">
         <div className="container">
           <div className="assistant__layout">
             {/* Sidebar - Conversations */}
@@ -118,7 +98,7 @@ export default function Assistant() {
                   placeholder="Escribe tu mensaje..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 />
                 <button className="assistant__send" onClick={handleSend}>
                   Enviar
