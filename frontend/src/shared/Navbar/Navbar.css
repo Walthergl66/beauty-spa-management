@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  height: 70px;
+  height: 76px;
 }
 
 .navbar__logo {
@@ -22,7 +22,7 @@
 }
 
 .navbar__logo-img {
-  height: 60px;
+  height: 66px;
   width: auto;
   object-fit: contain;
 }
@@ -85,7 +85,7 @@
   }
 
   .navbar__logo-img {
-    height: 46px;
+    height: 52px;
   }
 
   .navbar__menu,
