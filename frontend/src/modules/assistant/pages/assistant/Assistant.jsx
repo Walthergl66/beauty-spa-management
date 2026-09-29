@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useRequireAuth } from '@/modules/auth/index.js';
 import { useAssistantChat } from '@/modules/assistant/index.js';
 import './Assistant.css';
 
@@ -16,7 +15,6 @@ function conversationLabel(conversation) {
 }
 
 export default function Assistant() {
-  useRequireAuth();
   const {
     conversations,
     conversationId,

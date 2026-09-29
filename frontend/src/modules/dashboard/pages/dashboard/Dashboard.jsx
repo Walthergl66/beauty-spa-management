@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { dashboardApi } from '@/services/index.js';
-import { useRequireAuth } from '@/modules/auth/index.js';
 import { StatusBadge } from '@/shared/index.js';
 import { formatPrice } from '@/modules/catalog/index.js';
 import './Dashboard.css';
@@ -21,7 +20,6 @@ function formatDateTime(iso) {
 }
 
 export default function Dashboard() {
-  const { loading: authLoading, authorized } = useRequireAuth('ADMIN');
   const [summary, setSummary] = useState(null);
   const [topServices, setTopServices] = useState([]);
   const [recent, setRecent] = useState([]);
@@ -29,7 +27,6 @@ export default function Dashboard() {
   const [loadError, setLoadError] = useState(null);
 
   useEffect(() => {
-    if (authLoading || !authorized) return;
     let cancelled = false;
     setLoading(true);
     Promise.all([
@@ -52,10 +49,7 @@ export default function Dashboard() {
     return () => {
       cancelled = true;
     };
-  }, [authLoading, authorized]);
-
-  if (authLoading) return <p className="text-center">Verificando acceso…</p>;
-  if (!authorized) return null;
+  }, []);
 
   const kpis = summary
     ? [

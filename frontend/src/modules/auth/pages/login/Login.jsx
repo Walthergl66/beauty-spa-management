@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/index.js';
 import { useAuth } from '@/modules/auth/index.js';
 import '../../Auth.css';
@@ -7,6 +7,8 @@ import '../../Auth.css';
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -18,7 +20,13 @@ export default function Login() {
     setSubmitting(true);
     try {
       const me = await login({ email: email.trim(), password });
-      navigate(me?.role === 'ADMIN' ? ROUTES.dashboard : ROUTES.appointments, { replace: true });
+      const target =
+        typeof from === 'string' && from.startsWith('/')
+          ? from
+          : me?.role === 'ADMIN'
+            ? ROUTES.dashboard
+            : ROUTES.appointments;
+      navigate(target, { replace: true });
     } catch (err) {
       setFormError(err.message);
     } finally {

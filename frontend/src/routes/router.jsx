@@ -9,22 +9,45 @@ import { AssistantPage } from '@/modules/assistant/index.js';
 import { ProfilePage } from '@/modules/profile/index.js';
 import { NotFound } from '@/shared/index.js';
 import { ROUTES } from './paths.js';
+import { RequireAuth } from './RequireAuth.jsx';
 
 // Tabla de rutas — fina: solo monta páginas de módulos bajo el shell shared.
+// Privada toda la app salvo inicio, login, registro y 404.
 export function AppRoutes() {
   return (
     <Routes>
       <Route element={<Layout />}>
         <Route path={ROUTES.home} element={<HomePage />} />
-        <Route path={ROUTES.services} element={<ServicesPage />} />
-        <Route path="/services/:id" element={<ServiceDetailPage />} />
         <Route path={ROUTES.login} element={<LoginPage />} />
         <Route path={ROUTES.register} element={<RegisterPage />} />
-        <Route path={ROUTES.dashboard} element={<DashboardPage />} />
-        <Route path={ROUTES.appointments} element={<AppointmentsPage />} />
-        <Route path={ROUTES.book} element={<BookPage />} />
-        <Route path={ROUTES.assistant} element={<AssistantPage />} />
-        <Route path={ROUTES.profile} element={<ProfilePage />} />
+        <Route
+          path={ROUTES.services}
+          element={<RequireAuth><ServicesPage /></RequireAuth>}
+        />
+        <Route
+          path="/services/:id"
+          element={<RequireAuth><ServiceDetailPage /></RequireAuth>}
+        />
+        <Route
+          path={ROUTES.dashboard}
+          element={<RequireAuth role="ADMIN"><DashboardPage /></RequireAuth>}
+        />
+        <Route
+          path={ROUTES.appointments}
+          element={<RequireAuth><AppointmentsPage /></RequireAuth>}
+        />
+        <Route
+          path={ROUTES.book}
+          element={<RequireAuth><BookPage /></RequireAuth>}
+        />
+        <Route
+          path={ROUTES.assistant}
+          element={<RequireAuth><AssistantPage /></RequireAuth>}
+        />
+        <Route
+          path={ROUTES.profile}
+          element={<RequireAuth><ProfilePage /></RequireAuth>}
+        />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

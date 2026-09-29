@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { servicesApi, employeesApi, availabilityApi, appointmentsApi } from '@/services/index.js';
-import { useRequireAuth } from '@/modules/auth/index.js';
 import { formatPrice } from '@/modules/catalog/index.js';
 import { ROUTES } from '@/routes/index.js';
 import './BookAppointment.css';
@@ -22,7 +21,6 @@ function employeeInitials(employee) {
 }
 
 export default function BookAppointment() {
-  useRequireAuth();
   const [searchParams] = useSearchParams();
   const preselectedService = searchParams.get('service');
 

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { appointmentsApi } from '@/services/index.js';
-import { useRequireAuth } from '@/modules/auth/index.js';
 import { StatusBadge } from '@/shared/index.js';
 import { formatPrice } from '@/modules/catalog/index.js';
 import './Appointments.css';
@@ -29,7 +28,6 @@ function employeeName(appointment) {
 }
 
 export default function Appointments() {
-  useRequireAuth();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);

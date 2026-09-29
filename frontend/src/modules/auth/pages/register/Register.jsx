@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/index.js';
 import { useAuth } from '@/modules/auth/index.js';
 import '../../Auth.css';
@@ -16,6 +16,8 @@ const initialForm = {
 export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from;
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState(null);
@@ -41,7 +43,8 @@ export default function Register() {
         ...(form.phone.trim() ? { phone: form.phone.trim() } : {}),
         password: form.password,
       });
-      navigate(ROUTES.appointments, { replace: true });
+      const target = typeof from === 'string' && from.startsWith('/') ? from : ROUTES.appointments;
+      navigate(target, { replace: true });
     } catch (err) {
       setFormError(err.message);
     } finally {

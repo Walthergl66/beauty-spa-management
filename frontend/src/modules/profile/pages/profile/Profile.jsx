@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { usersApi, authApi, appointmentsApi } from '@/services/index.js';
-import { useAuth, useRequireAuth } from '@/modules/auth/index.js';
+import { useAuth } from '@/modules/auth/index.js';
 import { StatusBadge } from '@/shared/index.js';
 import { ROUTES } from '@/routes/index.js';
 import './Profile.css';
@@ -16,7 +16,6 @@ function formatDate(iso) {
 }
 
 export default function Profile() {
-  useRequireAuth();
   const { user, isAdmin, refreshUser, logout } = useAuth();
   const navigate = useNavigate();
   const [appointments, setAppointments] = useState([]);
