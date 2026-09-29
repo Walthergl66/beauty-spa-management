@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Navbar } from '../Navbar/index.js';
+import { BottomNav } from '../BottomNav/index.js';
 import { Footer } from '../Footer/index.js';
 import { FloatingAssistant } from '../FloatingAssistant/index.js';
 
@@ -11,6 +12,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <BottomNav />
       <FloatingAssistant />
     </div>
   );

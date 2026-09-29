@@ -3,6 +3,7 @@
 // `@/shared/Navbar/Navbar.jsx`.
 export { Layout } from './Layout/index.js';
 export { Navbar } from './Navbar/index.js';
+export { BottomNav } from './BottomNav/index.js';
 export { Footer } from './Footer/index.js';
 export { FloatingAssistant } from './FloatingAssistant/index.js';
 export { NotFound } from './NotFound/index.js';
