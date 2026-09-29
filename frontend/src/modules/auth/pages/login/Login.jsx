@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import './Auth.css';
+import { ROUTES } from '@/routes/index.js';
+import '../../Auth.css';
 
 export default function Login() {
   return (
@@ -48,7 +49,7 @@ export default function Login() {
         <div className="auth-card__footer">
           <p>
             ¿No tienes cuenta?{' '}
-            <Link to="/register" className="auth-card__link">
+            <Link to={ROUTES.register} className="auth-card__link">
               Regístrate
             </Link>
           </p>

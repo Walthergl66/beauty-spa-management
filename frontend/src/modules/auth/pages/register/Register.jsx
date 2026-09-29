@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import './Auth.css';
+import { ROUTES } from '@/routes/index.js';
+import '../../Auth.css';
 
 export default function Register() {
   return (
@@ -71,7 +72,7 @@ export default function Register() {
         <div className="auth-card__footer">
           <p>
             ¿Ya tienes cuenta?{' '}
-            <Link to="/login" className="auth-card__link">
+            <Link to={ROUTES.login} className="auth-card__link">
               Inicia Sesión
             </Link>
           </p>
