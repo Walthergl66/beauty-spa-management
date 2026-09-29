@@ -1,20 +1,6 @@
 import { useState } from 'react';
+import { initialMessages, quickActions, simulatedReply } from '@/mocks/index.js';
 import './FloatingAssistant.css';
-
-const initialMessages = [
-  {
-    id: 1,
-    role: 'assistant',
-    content: '¡Hola! Soy tu asistente virtual de Shirley Franco Spa. Estoy aquí para ayudarte con tus reservas, consultar servicios o cualquier duda que tengas. ¿En qué puedo ayudarte hoy?',
-  },
-];
-
-const quickActions = [
-  { label: 'Ver servicios', icon: '✦' },
-  { label: 'Reservar cita', icon: '📅' },
-  { label: 'Horarios disponibles', icon: '🕐' },
-  { label: 'Precios', icon: '💰' },
-];
 
 export default function FloatingAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +27,7 @@ export default function FloatingAssistant() {
       const response = {
         id: messages.length + 2,
         role: 'assistant',
-        content: 'Gracias por tu mensaje. Estoy procesando tu consulta. Un momento por favor... ✨',
+        content: simulatedReply,
       };
       setMessages((prev) => [...prev, response]);
       setIsTyping(false);

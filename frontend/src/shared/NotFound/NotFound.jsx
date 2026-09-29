@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ROUTES } from '@/routes/index.js';
 import './NotFound.css';
 
 export default function NotFound() {
@@ -12,7 +13,7 @@ export default function NotFound() {
           <p className="notfound__text">
             Lo sentimos, la página que buscas no existe o ha sido movida.
           </p>
-          <Link to="/" className="btn btn--primary">
+          <Link to={ROUTES.home} className="btn btn--primary">
             Volver al Inicio
           </Link>
         </div>

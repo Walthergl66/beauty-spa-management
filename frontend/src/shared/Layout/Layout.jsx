@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from './Navbar.jsx';
-import Footer from './Footer.jsx';
-import FloatingAssistant from './FloatingAssistant.jsx';
+import { Navbar } from '../Navbar/index.js';
+import { Footer } from '../Footer/index.js';
+import { FloatingAssistant } from '../FloatingAssistant/index.js';
 
 export default function Layout() {
   return (

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { contact } from '@/mocks/index.js';
+import { ROUTES } from '@/routes/index.js';
 import './Footer.css';
 
 export default function Footer() {
@@ -18,26 +20,27 @@ export default function Footer() {
 
           <div className="footer__column">
             <h4 className="footer__title">Navegación</h4>
-            <Link to="/" className="footer__link">Inicio</Link>
-            <Link to="/services" className="footer__link">Servicios</Link>
-            <Link to="/book" className="footer__link">Reservar Cita</Link>
-            <Link to="/assistant" className="footer__link">Asistente Virtual</Link>
+            <Link to={ROUTES.home} className="footer__link">Inicio</Link>
+            <Link to={ROUTES.services} className="footer__link">Servicios</Link>
+            <Link to={ROUTES.book} className="footer__link">Reservar Cita</Link>
+            <Link to={ROUTES.assistant} className="footer__link">Asistente Virtual</Link>
           </div>
 
           <div className="footer__column">
             <h4 className="footer__title">Cuenta</h4>
-            <Link to="/login" className="footer__link">Iniciar Sesión</Link>
-            <Link to="/register" className="footer__link">Registrarse</Link>
-            <Link to="/profile" className="footer__link">Mi Perfil</Link>
-            <Link to="/appointments" className="footer__link">Mis Citas</Link>
+            <Link to={ROUTES.login} className="footer__link">Iniciar Sesión</Link>
+            <Link to={ROUTES.register} className="footer__link">Registrarse</Link>
+            <Link to={ROUTES.profile} className="footer__link">Mi Perfil</Link>
+            <Link to={ROUTES.appointments} className="footer__link">Mis Citas</Link>
           </div>
 
           <div className="footer__column">
             <h4 className="footer__title">Contacto</h4>
-            <p className="footer__text">Av. Principal 1234</p>
-            <p className="footer__text">Quito, Ecuador</p>
-            <p className="footer__text">+593 99 999 9999</p>
-            <p className="footer__text">hola@sherleyfranco.com</p>
+            {contact.addressLines.map((line) => (
+              <p key={line} className="footer__text">{line}</p>
+            ))}
+            <p className="footer__text">{contact.phone}</p>
+            <p className="footer__text">{contact.email}</p>
           </div>
         </div>
 
