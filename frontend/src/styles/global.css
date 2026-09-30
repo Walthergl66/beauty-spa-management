@@ -1,10 +1,16 @@
 /* ============================================
    BELLEZASPA — Design System
-   Principales: Blanco #FFFFFF, Palo Rosa #E3AAAA
+   Principales: Negro #1A1A1A, Blanco #FFFFFF, Palo Rosa #E3AAAA
    Detalles: Dorado (botones, reflejos, efectos)
    ============================================ */
 
 :root {
+  /* Negro — color principal (texto, contraste, elegancia) */
+  --color-black-900: #1A1A1A;
+  --color-black-800: #2D2D2D;
+  --color-black-700: #404040;
+  --color-black-600: #525252;
+
   /* Blanco — color principal de fondo */
   --color-white: #FFFFFF;
 
@@ -22,8 +28,8 @@
   --color-gold-600: #A8861D;
 
   /* Neutros / Texto */
-  --color-text-primary: #2D2D2D;
-  --color-text-secondary: #6B6B6B;
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #525252;
   --color-text-muted: #9A9A9A;
   --color-border: #E8E8E8;
 
@@ -186,9 +192,9 @@ select {
 }
 
 .btn--primary {
-  background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-500));
+  background: var(--color-black-900);
   color: var(--color-white);
-  box-shadow: var(--shadow-gold);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -214,7 +220,7 @@ select {
 
 .btn--primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .btn--secondary {
@@ -224,9 +230,9 @@ select {
 }
 
 .btn--secondary:hover {
-  border-color: var(--color-gold-400);
-  color: var(--color-gold-500);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  border-color: var(--color-black-900);
+  color: var(--color-black-900);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
 }
 
 .btn--outline {
@@ -246,7 +252,7 @@ select {
 }
 
 .btn--ghost:hover {
-  color: var(--color-gold-500);
+  color: var(--color-black-900);
 }
 
 .btn--block {
@@ -271,13 +277,13 @@ select {
 .card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
-  border-color: rgba(212, 175, 55, 0.45);
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 /* Selección palo rosa */
 ::selection {
-  background: var(--color-blush-100);
-  color: var(--color-text-primary);
+  background: var(--color-black-900);
+  color: var(--color-white);
 }
 
 /* Títulos con subrayado dorado */
