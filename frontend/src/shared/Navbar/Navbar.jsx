@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/routes/index.js';
 import { useAuth } from '@/modules/auth/index.js';
 import './Navbar.css';
@@ -7,6 +7,7 @@ import './Navbar.css';
 // (la navegación vive en el BottomNav estilo app).
 export default function Navbar() {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
@@ -58,13 +59,21 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link to={ROUTES.login} className="btn btn--ghost btn--sm">
+              <button
+                type="button"
+                className="btn btn--ghost btn--sm"
+                onClick={() => navigate(ROUTES.login)}
+              >
                 Iniciar Sesión
-              </Link>
+              </button>
               <span className="navbar__divider" aria-hidden="true"></span>
-              <Link to={ROUTES.register} className="btn btn--ghost btn--sm">
+              <button
+                type="button"
+                className="btn btn--ghost btn--sm"
+                onClick={() => navigate(ROUTES.register)}
+              >
                 Registrarse
-              </Link>
+              </button>
             </>
           )}
         </div>
