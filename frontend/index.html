@@ -2,7 +2,21 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/S1.png" />
+    <link id="favicon" rel="icon" type="image/png" href="/1.2_w-removebg-preview.png" />
+    <script>
+      (function () {
+        var lightIcon = '/1.2_w-removebg-preview.png';
+        var darkIcon = '/2_B-removebg-preview.png';
+        var favicon = document.getElementById('favicon');
+        var mq = window.matchMedia('(prefers-color-scheme: dark)');
+        function updateFavicon(e) {
+          favicon.href = e.matches ? darkIcon : lightIcon;
+        }
+        updateFavicon(mq);
+        if (mq.addEventListener) mq.addEventListener('change', updateFavicon);
+        else if (mq.addListener) mq.addListener(updateFavicon);
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#E3AAAA" />
     <meta name="description" content="Shirley Franco - Sistema de gestión de citas para Spa de Belleza" />
