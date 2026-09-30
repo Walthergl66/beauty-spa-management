@@ -1,0 +1,117 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.navbar__container {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  height: 76px;
+}
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  text-decoration: none;
+}
+
+.navbar__logo-img {
+  height: 66px;
+  width: auto;
+  object-fit: contain;
+}
+
+.navbar__menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+
+.navbar__link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  position: relative;
+}
+
+.navbar__link:hover,
+.navbar__link.active {
+  color: var(--color-gold-500);
+}
+
+.navbar__link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-gold-400);
+  border-radius: 1px;
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-left: var(--spacing-md);
+  justify-self: end;
+}
+
+.navbar__divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-gold-400);
+}
+
+/* Avatar solo mobile: la navegación vive en el BottomNav */
+.navbar__avatar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .navbar__container {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .navbar__logo-img {
+    height: 52px;
+  }
+
+  .navbar__menu,
+  .navbar__actions {
+    display: none;
+  }
+
+  .navbar__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-blush-100);
+    color: var(--color-gold-600);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: border-color 150ms ease-out;
+  }
+
+  .navbar__avatar:active {
+    transform: scale(0.96);
+    transition: transform 100ms ease-out, border-color 150ms ease-out;
+  }
+}
