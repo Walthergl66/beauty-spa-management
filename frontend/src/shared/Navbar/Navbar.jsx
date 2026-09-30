@@ -20,7 +20,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="container navbar__container">
         <Link to={ROUTES.home} className="navbar__logo">
-          <img src="/si.png" alt="Shirley Franco - Técnica en belleza" className="navbar__logo-img" />
+          <img src="/S1.png" alt="Shirley Franco - Técnica en belleza" className="navbar__logo-img" />
         </Link>
 
         {isAuthenticated && (

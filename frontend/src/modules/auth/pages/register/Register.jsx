@@ -56,7 +56,7 @@ export default function Register() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-card__header">
-          <img src="/si.png" alt="Shirley Franco" className="auth-card__logo" />
+          <img src="/S1.png" alt="Shirley Franco" className="auth-card__logo" />
           <h1 className="auth-card__title">Crear Cuenta</h1>
           <p className="auth-card__subtitle">Únete a Shirley Franco Spa y disfruta de nuestros servicios</p>
         </div>

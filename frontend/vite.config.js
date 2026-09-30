@@ -13,7 +13,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'icons/*.png'],
+      includeAssets: ['favicon.svg', 'icons/*.png', 'S1.png', 'S2.png'],
       manifest: {
         name: 'Sherley Franco - Gestión de Citas',
         short_name: 'SF Spa',

@@ -16,7 +16,7 @@ export default function Footer() {
         <div className="footer__grid">
           <div className="footer__brand">
             <div className="footer__logo">
-              <img src="/si.png" alt="Shirley Franco" className="footer__logo-img" />
+              <img src="/S1.png" alt="Shirley Franco" className="footer__logo-img" />
             </div>
             <p className="footer__description">
               Tu espacio de belleza y bienestar. Reserva tus citas y disfruta de

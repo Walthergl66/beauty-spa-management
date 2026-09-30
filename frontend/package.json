@@ -17,5 +17,9 @@
     "@vitejs/plugin-react": "^4.3.4",
     "vite": "^6.0.0",
     "vite-plugin-pwa": "^0.21.1"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.63.5",
+    "@rollup/wasm-node": "^4.63.5"
   }
 }
