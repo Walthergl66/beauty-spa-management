@@ -82,7 +82,7 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 18px;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -103,14 +103,15 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-primary);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
+h1 { font-size: 3rem; }
+h2 { font-size: 2.4rem; }
+h3 { font-size: 1.8rem; }
+h4 { font-size: 1.5rem; }
 
 p {
   color: var(--color-text-secondary);
   line-height: 1.7;
+  font-size: 1.1rem;
 }
 
 a {
@@ -140,7 +141,7 @@ input,
 textarea,
 select {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--color-text-primary);
 }
 
@@ -178,9 +179,9 @@ select {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-xs);
-  padding: 0.75rem 1.75rem;
+  padding: 0.85rem 2rem;
   border-radius: var(--radius-md);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   transition: transform var(--transition-fast), box-shadow var(--transition-base), background var(--transition-base), color var(--transition-fast), border-color var(--transition-fast);
@@ -260,8 +261,8 @@ select {
 }
 
 .btn--sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
 }
 
 /* Cards */
@@ -329,9 +330,9 @@ select {
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.75rem;
+  padding: 0.3rem 0.85rem;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -387,9 +388,9 @@ select {
 
 /* Responsive */
 @media (max-width: 768px) {
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.25rem; }
+  h1 { font-size: 2.4rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.5rem; }
 
   .section {
     padding: var(--spacing-2xl) 0;
