@@ -23,6 +23,7 @@
   height: 72px;
   width: auto;
   object-fit: contain;
+  filter: brightness(1.15) drop-shadow(0 0 12px rgba(212, 175, 55, 0.35));
 }
 
 .footer__description {

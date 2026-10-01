@@ -355,6 +355,14 @@
 
   .floating-assistant__header {
     padding-top: calc(12px + env(safe-area-inset-top));
+    padding-left: 12px;
+    padding-right: 12px;
+    justify-content: flex-start;
+    gap: 4px;
+  }
+
+  .floating-assistant__header-info {
+    margin-left: 4px;
   }
 
   .floating-assistant__back {
@@ -363,13 +371,13 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    margin-right: 4px;
     border-radius: 50%;
     background: transparent;
     border: none;
     color: var(--color-text-primary);
     cursor: pointer;
     transition: background 160ms ease-out;
+    flex-shrink: 0;
   }
 
   .floating-assistant__back:active {

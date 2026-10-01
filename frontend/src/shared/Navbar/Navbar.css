@@ -78,17 +78,31 @@
   text-decoration: none;
   cursor: pointer;
   pointer-events: auto;
-  transition: color var(--transition-fast);
+  outline: none;
+  user-select: none;
+  position: relative;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
 .navbar__action-link:hover {
   color: var(--color-black-900);
 }
 
+.navbar__action-link:active {
+  transform: scale(0.96);
+  transition: transform 100ms ease-out;
+}
+
+.navbar__action-link:focus {
+  outline: none;
+}
+
 .navbar__divider {
   width: 1px;
   height: 20px;
-  background: var(--color-black-900);
+  background: var(--color-gold-400);
 }
 
 /* Avatar solo mobile: la navegación vive en el BottomNav */
