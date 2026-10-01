@@ -3,18 +3,8 @@
   top: 0;
   z-index: 100;
   padding-bottom: 16px;
-  background: transparent;
-}
-
-.navbar::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 55%, rgba(255, 255, 255, 0.85) 75%, rgba(255, 255, 255, 0) 100%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  pointer-events: none;
-  z-index: 0;
+  background: var(--color-white, #ffffff);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .navbar__container {
@@ -22,8 +12,6 @@
   grid-template-columns: auto 1fr auto auto;
   align-items: center;
   height: 76px;
-  position: relative;
-  z-index: 1;
 }
 
 .navbar__logo {
@@ -77,15 +65,24 @@
   gap: var(--spacing-sm);
   margin-left: var(--spacing-md);
   justify-self: end;
-  position: relative;
-  z-index: 2;
 }
 
-.navbar__actions button,
-.navbar__actions a {
+.navbar__action-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
   cursor: pointer;
-  position: relative;
-  z-index: 3;
+  pointer-events: auto;
+  transition: color var(--transition-fast);
+}
+
+.navbar__action-link:hover {
+  color: var(--color-black-900);
 }
 
 .navbar__divider {

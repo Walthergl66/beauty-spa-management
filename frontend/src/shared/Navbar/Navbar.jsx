@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { ROUTES } from '@/routes/index.js';
 import { useAuth } from '@/modules/auth/index.js';
 import './Navbar.css';
@@ -7,10 +7,13 @@ import './Navbar.css';
 // (la navegación vive en el BottomNav estilo app).
 export default function Navbar() {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
+  };
+
+  const handleNavigate = (path) => {
+    window.location.href = path;
   };
 
   const avatarLabel = isAuthenticated
@@ -49,11 +52,11 @@ export default function Navbar() {
         <div className="navbar__actions">
           {isAuthenticated ? (
             <>
-              <Link to={ROUTES.profile} className="btn btn--ghost btn--sm">
+              <Link to={ROUTES.profile} className="navbar__action-link">
                 {user?.firstName ?? 'Mi Perfil'}
               </Link>
               <span className="navbar__divider" aria-hidden="true"></span>
-              <button type="button" className="btn btn--ghost btn--sm" onClick={handleLogout}>
+              <button type="button" className="navbar__action-link" onClick={handleLogout}>
                 Cerrar Sesión
               </button>
             </>
@@ -61,16 +64,16 @@ export default function Navbar() {
             <>
               <button
                 type="button"
-                className="btn btn--ghost btn--sm"
-                onClick={() => navigate(ROUTES.login)}
+                className="navbar__action-link"
+                onClick={() => handleNavigate(ROUTES.login)}
               >
                 Iniciar Sesión
               </button>
               <span className="navbar__divider" aria-hidden="true"></span>
               <button
                 type="button"
-                className="btn btn--ghost btn--sm"
-                onClick={() => navigate(ROUTES.register)}
+                className="navbar__action-link"
+                onClick={() => handleNavigate(ROUTES.register)}
               >
                 Registrarse
               </button>
