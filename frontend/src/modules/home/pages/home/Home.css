@@ -1,5 +1,5 @@
 /* ============================================
-   HOME — Vista funcional del usuario
+   HOME — Vista funcional del usuario (autenticado)
    ============================================ */
 
 .home__header {
@@ -224,6 +224,133 @@
   margin: var(--spacing-xs) 0;
 }
 
+/* ============================================
+   HOME — Landing Page (visitantes)
+   ============================================ */
+
+.home__hero {
+  position: relative;
+  padding: var(--spacing-3xl) 0;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.home__hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home__hero-title {
+  font-size: 3.5rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--color-white);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: var(--spacing-lg);
+}
+
+.home__hero-description {
+  font-size: 1.15rem;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.25);
+  line-height: 1.8;
+  margin-bottom: var(--spacing-xl);
+  max-width: 480px;
+}
+
+.home__hero-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.home__hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.home__hero-slide--active {
+  opacity: 1;
+}
+
+.home__hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.home__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(45, 45, 45, 0.6) 0%, rgba(120, 70, 70, 0.35) 55%, rgba(227, 170, 170, 0.35) 100%);
+  z-index: 1;
+}
+
+/* Features */
+.home__features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-2xl);
+}
+
+.home__feature {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.home__feature-icon {
+  font-size: 2rem;
+  color: var(--color-gold-400);
+  display: block;
+  margin-bottom: var(--spacing-md);
+}
+
+.home__feature-title {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+.home__feature-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* CTA — fondo blanco con halo palo rosa y filete dorado */
+.home__cta {
+  background:
+    radial-gradient(ellipse 60% 90% at 50% 110%, rgba(227, 170, 170, 0.35), transparent),
+    var(--color-white);
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--color-gold-400), transparent) 1;
+}
+
+.home__cta-title {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.home__cta-text {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-xl);
+  color: var(--color-text-secondary);
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .home__tips {
@@ -240,6 +367,14 @@
 
   .home__info {
     grid-template-columns: 1fr;
+  }
+
+  .home__hero-title {
+    font-size: 2.25rem;
+  }
+
+  .home__features {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -264,5 +399,9 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-sm);
+  }
+
+  .home__features {
+    grid-template-columns: 1fr;
   }
 }

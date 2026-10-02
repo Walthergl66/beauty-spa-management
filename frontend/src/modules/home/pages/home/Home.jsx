@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/modules/auth/index.js';
 import { servicesApi } from '@/services/index.js';
 import { formatPrice } from '@/modules/catalog/index.js';
 import { ROUTES } from '@/routes/index.js';
+import HomeLanding from './HomeLanding.jsx';
 import './Home.css';
 
 const QUICK_ACTIONS = [
@@ -49,6 +51,7 @@ const TIPS = [
 ];
 
 export default function Home() {
+  const { isAuthenticated } = useAuth();
   const [featured, setFeatured] = useState([]);
   const [greeting, setGreeting] = useState('');
 
@@ -74,6 +77,12 @@ export default function Home() {
     };
   }, []);
 
+  // Si no está autenticado, mostrar la landing page de presentación
+  if (!isAuthenticated) {
+    return <HomeLanding />;
+  }
+
+  // Vista para clientas autenticadas
   return (
     <div className="home">
       {/* Header con saludo */}
